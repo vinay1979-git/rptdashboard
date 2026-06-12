@@ -67,7 +67,7 @@ export class ChartService {
       }
     });
 
-    return await chart.toBuffer();
+    return await chart.toBinary();
   }
 
   /**
@@ -128,6 +128,6 @@ export class ChartService {
       }
     });
 
-    return await chart.toBuffer();
+    return await chart.toBinary();
   }
 }
