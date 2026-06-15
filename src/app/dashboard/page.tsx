@@ -1,15 +1,13 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, startTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import Papa from 'papaparse';
 import { 
-  FileSpreadsheet, 
   Trash2, 
   Plus, 
   Minus, 
   BarChart3, 
-  ShieldAlert, 
   Loader2, 
   LogOut,
   Settings,
@@ -246,7 +244,6 @@ export default function DashboardPage() {
         setErrorMessage(result.error);
         setIsSubmitting(false);
       } else if (result.id) {
-        // Route directly to the report detail page
         router.push(`/report/${result.id}`);
       }
 
@@ -258,19 +255,19 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen flex text-slate-200">
+    <div className="min-h-screen flex bg-slate-50 text-slate-800">
       
       {/* 1. SIDEBAR (Left 1/4) */}
-      <aside className="w-80 border-r border-slate-800 bg-[#0b0f19]/80 backdrop-blur-md p-6 flex flex-col gap-6 shrink-0 h-screen sticky top-0">
+      <aside className="w-80 border-r border-slate-200 bg-slate-100 p-6 flex flex-col gap-6 shrink-0 h-screen sticky top-0 shadow-sm">
         
         {/* User profile section */}
-        <div className="flex items-center gap-3 border-b border-slate-800/80 pb-6">
-          <div className="p-2.5 bg-gradient-to-tr from-indigo-500/20 to-pink-500/20 text-indigo-400 border border-indigo-500/20 rounded-xl">
+        <div className="flex items-center gap-3 border-b border-slate-200 pb-6">
+          <div className="p-2.5 bg-blue-50 text-blue-900 border border-blue-200 rounded-xl shadow-sm">
             <BarChart3 className="h-5 w-5" />
           </div>
           <div className="overflow-hidden">
-            <h3 className="font-extrabold text-sm text-white truncate">rptdashboard</h3>
-            <span className="text-[10px] text-slate-400 truncate block">{userEmail}</span>
+            <h3 className="font-extrabold text-sm text-slate-900 tracking-tight">rptdashboard</h3>
+            <span className="text-[10px] text-slate-500 truncate block font-medium">{userEmail}</span>
           </div>
         </div>
 
@@ -279,7 +276,7 @@ export default function DashboardPage() {
           {isAdmin && (
             <button
               onClick={() => router.push('/admin')}
-              className="flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-pink-400 bg-pink-400/5 hover:bg-pink-400/10 border border-pink-400/15 rounded-lg transition-all text-left cursor-pointer"
+              className="flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-blue-900 bg-white hover:bg-slate-50 border border-slate-200 rounded-lg transition-all text-left cursor-pointer shadow-sm"
             >
               <Settings className="h-4 w-4" />
               Admin Management
@@ -289,14 +286,14 @@ export default function DashboardPage() {
 
         {/* Historical report logs */}
         <div className="flex-grow flex flex-col gap-2 min-h-0">
-          <h4 className="text-[10px] uppercase tracking-wider font-extrabold text-slate-500 flex items-center gap-1.5 mb-1">
+          <h4 className="text-[10px] uppercase tracking-wider font-bold text-slate-400 flex items-center gap-1.5 mb-1">
             <History className="h-3 w-3" />
             Historical Reports
           </h4>
           
           {loadingHistory ? (
-            <div className="flex items-center gap-2 text-xs text-slate-500 py-4">
-              <Loader2 className="h-4.5 w-4.5 animate-spin text-indigo-500" />
+            <div className="flex items-center gap-2 text-xs text-slate-400 py-4">
+              <Loader2 className="h-4.5 w-4.5 animate-spin text-blue-900" />
               <span>Fetching logs...</span>
             </div>
           ) : (
@@ -305,9 +302,9 @@ export default function DashboardPage() {
                 <button
                   key={report.id}
                   onClick={() => router.push(`/report/${report.id}`)}
-                  className="text-left p-3 rounded-lg bg-slate-900/40 hover:bg-slate-900 border border-slate-900 hover:border-slate-800 transition-all text-xs group cursor-pointer"
+                  className="text-left p-3 rounded-lg bg-white hover:bg-slate-50 border border-slate-200 transition-all text-xs group cursor-pointer shadow-sm"
                 >
-                  <span className="text-slate-200 font-bold block truncate group-hover:text-indigo-400 transition-colors">
+                  <span className="text-slate-800 font-bold block truncate group-hover:text-blue-900 transition-colors">
                     {report.title}
                   </span>
                   <span className="text-[10px] text-slate-500 mt-1 block">
@@ -325,7 +322,7 @@ export default function DashboardPage() {
         {/* Sign out */}
         <button
           onClick={() => logout()}
-          className="flex items-center justify-center gap-2 py-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-900/60 hover:bg-slate-900 border border-slate-850 hover:border-slate-800 rounded-lg transition-all cursor-pointer"
+          className="flex items-center justify-center gap-2 py-2 text-xs font-bold text-slate-650 hover:text-slate-900 bg-white hover:bg-slate-50 border border-slate-200 rounded-lg transition-all cursor-pointer shadow-sm"
         >
           <LogOut className="h-3.5 w-3.5" />
           Sign Out
@@ -335,14 +332,14 @@ export default function DashboardPage() {
       {/* 2. MAIN WORKSPACE AREA (Right 3/4) */}
       <main className="flex-grow p-8 max-w-5xl mx-auto flex flex-col gap-6 overflow-y-auto">
         <header>
-          <h1 className="text-3xl font-black bg-gradient-to-r from-indigo-400 via-pink-400 to-sky-400 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
             Compile Status Report
           </h1>
-          <p className="text-slate-400 text-xs mt-1">Upload CSV datasets, add highlights, and compile dynamic reports</p>
+          <p className="text-slate-500 text-xs mt-1 font-medium">Upload CSV datasets, add highlights, and compile dynamic reports</p>
         </header>
 
         {errorMessage && (
-          <div className="bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs px-4 py-3.5 rounded-xl flex items-start gap-2.5">
+          <div className="bg-red-50 border border-red-100 text-red-700 text-xs px-4 py-3.5 rounded-lg flex items-start gap-2.5">
             <AlertCircle className="h-4.5 w-4.5 shrink-0 mt-0.5" />
             <span>{errorMessage}</span>
           </div>
@@ -350,9 +347,9 @@ export default function DashboardPage() {
 
         <div className="flex flex-col gap-6">
           {/* Section 1: Title */}
-          <div className="glass-card rounded-2xl p-6">
+          <div className="corporate-card bg-white rounded-xl p-6 border border-slate-200">
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Report Title</label>
+              <label className="text-xs font-bold text-slate-650 uppercase tracking-wider">Report Title</label>
               <input 
                 type="text" 
                 value={reportTitle}
@@ -365,9 +362,9 @@ export default function DashboardPage() {
           </div>
 
           {/* Section 2: CSV Upload Stage */}
-          <div className="glass-card rounded-2xl p-6">
-            <h2 className="text-base font-bold text-white mb-4 flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
+          <div className="corporate-card bg-white rounded-xl p-6 border border-slate-200">
+            <h2 className="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-blue-900"></span>
               Staging Datasets (CSV)
             </h2>
             
@@ -375,32 +372,32 @@ export default function DashboardPage() {
               
               {/* Zone 1: Features (Mandatory) */}
               <div className="flex flex-col gap-1.5">
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
-                  Features / Capabilities <span className="text-indigo-400 font-bold">*Mandatory</span>
+                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                  Features / Capabilities <span className="text-blue-900 font-bold">*Mandatory</span>
                 </span>
                 {renderUploadZone('features', 'features')}
               </div>
 
               {/* Zone 2: Tasks (Mandatory) */}
               <div className="flex flex-col gap-1.5">
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
-                  Tasks / Items <span className="text-indigo-400 font-bold">*Mandatory</span>
+                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                  Tasks / Items <span className="text-blue-900 font-bold">*Mandatory</span>
                 </span>
                 {renderUploadZone('tasks', 'tasks')}
               </div>
 
               {/* Zone 3: Risks (Optional) */}
               <div className="flex flex-col gap-1.5">
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
-                  Risks Log <span className="text-slate-500 font-medium">(Optional)</span>
+                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                  Risks Log <span className="text-slate-400 font-medium">(Optional)</span>
                 </span>
                 {renderUploadZone('risks', 'risks')}
               </div>
 
               {/* Zone 4: Issues (Optional) */}
               <div className="flex flex-col gap-1.5">
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
-                  Issues Log <span className="text-slate-500 font-medium">(Optional)</span>
+                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                  Issues Log <span className="text-slate-400 font-medium">(Optional)</span>
                 </span>
                 {renderUploadZone('issues', 'issues')}
               </div>
@@ -409,10 +406,10 @@ export default function DashboardPage() {
           </div>
 
           {/* Section 3: Manual Highlights */}
-          <div className="glass-card rounded-2xl p-6">
+          <div className="corporate-card bg-white rounded-xl p-6 border border-slate-200">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-base font-bold text-white flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-pink-500"></span>
+              <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-blue-900"></span>
                 Major Highlights / Achievements
               </h2>
               <span className="text-[10px] text-slate-500 font-medium">Add between 1 and 5 bullets</span>
@@ -421,7 +418,7 @@ export default function DashboardPage() {
             <div className="flex flex-col gap-3">
               {highlights.map((bullet, index) => (
                 <div key={index} className="flex gap-2 items-center">
-                  <span className="text-xs text-indigo-400 font-bold w-5 text-right shrink-0">{index + 1}.</span>
+                  <span className="text-xs text-blue-900 font-bold w-5 text-right shrink-0">{index + 1}.</span>
                   <input 
                     type="text" 
                     value={bullet}
@@ -433,7 +430,7 @@ export default function DashboardPage() {
                   <button
                     onClick={() => removeHighlight(index)}
                     disabled={highlights.length <= 1 || isSubmitting}
-                    className="p-2 bg-slate-900/50 hover:bg-slate-900 border border-slate-800 text-slate-400 hover:text-rose-400 rounded-lg cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                    className="p-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-500 hover:text-red-650 rounded-lg cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed transition-all"
                     title="Remove Highlight"
                   >
                     <Minus className="h-4 w-4" />
@@ -445,7 +442,7 @@ export default function DashboardPage() {
                 type="button"
                 onClick={addHighlight}
                 disabled={highlights.length >= 5 || isSubmitting}
-                className="mt-2 self-start flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-indigo-400 hover:text-white bg-indigo-500/5 hover:bg-indigo-600 border border-indigo-500/10 hover:border-indigo-500 rounded-lg transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                className="mt-2 self-start flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-blue-900 hover:text-white bg-blue-50 hover:bg-blue-900 border border-blue-200 hover:border-blue-900 rounded-lg transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <Plus className="h-3.5 w-3.5" />
                 Add Highlight Point
@@ -457,7 +454,7 @@ export default function DashboardPage() {
           <button
             onClick={handleGenerate}
             disabled={!files.features || !files.tasks || !reportTitle.trim() || isSubmitting}
-            className="w-full py-3 bg-gradient-to-r from-indigo-600 to-pink-600 hover:from-indigo-500 hover:to-pink-500 disabled:from-indigo-800 disabled:to-pink-800 text-white text-base font-bold rounded-2xl transition-all shadow-xl hover:shadow-indigo-500/10 flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed"
+            className="w-full py-3 bg-blue-900 hover:bg-blue-800 disabled:bg-blue-900/60 text-white text-base font-bold rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed"
           >
             {isSubmitting ? (
               <>
@@ -480,18 +477,18 @@ export default function DashboardPage() {
     
     if (file) {
       return (
-        <div className="flex items-center justify-between p-3.5 rounded-xl border border-indigo-500/30 bg-indigo-500/5 transition-all">
+        <div className="flex items-center justify-between p-3.5 rounded-lg border border-blue-200 bg-blue-50/30 transition-all">
           <div className="flex items-center gap-2.5 overflow-hidden">
-            <FileCheck className="h-5 w-5 text-indigo-400 shrink-0" />
+            <FileCheck className="h-5 w-5 text-blue-900 shrink-0" />
             <div className="overflow-hidden">
-              <span className="text-xs font-bold text-slate-200 block truncate">{file.name}</span>
+              <span className="text-xs font-bold text-slate-800 block truncate">{file.name}</span>
               <span className="text-[10px] text-slate-500">{(file.size / 1024).toFixed(1)} KB</span>
             </div>
           </div>
           <button
             onClick={() => removeFile(zone)}
             disabled={isSubmitting}
-            className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-slate-900 border border-transparent hover:border-slate-800 rounded-lg transition-all cursor-pointer disabled:opacity-40"
+            className="p-1.5 text-slate-500 hover:text-red-700 hover:bg-slate-100 border border-transparent hover:border-slate-200 rounded-lg transition-all cursor-pointer disabled:opacity-40"
             title="Remove File"
           >
             <Trash2 className="h-4.5 w-4.5" />
@@ -505,15 +502,15 @@ export default function DashboardPage() {
         onDragOver={(e) => handleDrag(e, zone, true)}
         onDragLeave={(e) => handleDrag(e, zone, false)}
         onDrop={(e) => handleDrop(e, zone)}
-        className={`border-2 border-dashed rounded-xl p-5 text-center flex flex-col items-center justify-center gap-1.5 transition-all ${
+        className={`border-2 border-dashed rounded-lg p-5 text-center flex flex-col items-center justify-center gap-1.5 transition-all ${
           active 
-            ? 'border-indigo-500 bg-indigo-600/5' 
-            : 'border-slate-800 bg-slate-900/30 hover:border-slate-700 hover:bg-slate-900/50'
+            ? 'border-blue-900 bg-blue-50' 
+            : 'border-slate-300 bg-slate-50/50 hover:border-slate-400 hover:bg-slate-50'
         }`}
       >
-        <FileUp className={`h-6 w-6 ${active ? 'text-indigo-400 animate-bounce' : 'text-slate-500'}`} />
+        <FileUp className={`h-6 w-6 ${active ? 'text-blue-900 animate-bounce' : 'text-slate-450'}`} />
         <div>
-          <label className="text-xs font-semibold text-slate-200 hover:text-indigo-400 cursor-pointer transition-colors block">
+          <label className="text-xs font-bold text-slate-700 hover:text-blue-900 cursor-pointer transition-colors block">
             Click to upload 
             <input 
               type="file" 

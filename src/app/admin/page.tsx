@@ -75,152 +75,154 @@ export default function AdminPage() {
   };
 
   return (
-    <div className="min-h-screen p-4 md:p-8 max-w-6xl mx-auto flex flex-col gap-6 text-slate-200">
-      
-      {/* Header bar */}
-      <header className="flex justify-between items-center border-b border-slate-800 pb-6">
-        <div className="flex items-center gap-3">
-          <button 
-            onClick={() => router.push('/dashboard')}
-            className="p-2 bg-slate-850 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 rounded-lg text-slate-400 hover:text-white transition-all cursor-pointer"
-            title="Back to Dashboard"
-          >
-            <ChevronLeft className="h-5 w-5" />
-          </button>
-          <div>
-            <h1 className="text-2xl font-black bg-gradient-to-r from-indigo-400 via-pink-400 to-sky-400 bg-clip-text text-transparent">
-              Admin Control Center
-            </h1>
-            <p className="text-slate-400 text-xs mt-1">Manage user provisioning and access controls</p>
-          </div>
-        </div>
-      </header>
-
-      {/* Main content grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    <div className="min-h-screen bg-slate-50 p-4 md:p-8 text-slate-800">
+      <div className="max-w-6xl mx-auto flex flex-col gap-6">
         
-        {/* Left Column: Form (5 cols) */}
-        <section className="lg:col-span-5 flex flex-col gap-6">
-          <div className="glass-card rounded-2xl p-6">
-            <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-              <UserPlus className="h-5 w-5 text-indigo-400" />
-              Provision New User
-            </h2>
+        {/* Header bar */}
+        <header className="flex justify-between items-center border-b border-slate-200 pb-6">
+          <div className="flex items-center gap-3">
+            <button 
+              onClick={() => router.push('/dashboard')}
+              className="p-2 bg-white hover:bg-slate-50 border border-slate-200 rounded-lg text-slate-500 hover:text-slate-900 transition-all cursor-pointer shadow-sm"
+              title="Back to Dashboard"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+            <div>
+              <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
+                Admin Control Center
+              </h1>
+              <p className="text-slate-500 text-xs mt-1">Manage user provisioning and access controls</p>
+            </div>
+          </div>
+        </header>
 
-            {message && (
-              <div className={`mb-5 p-4 rounded-xl border flex items-start gap-2.5 text-xs ${
-                message.type === 'success' 
-                  ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' 
-                  : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
-              }`}>
-                {message.type === 'success' ? (
-                  <CheckCircle2 className="h-4.5 w-4.5 shrink-0 mt-0.5" />
-                ) : (
-                  <AlertTriangle className="h-4.5 w-4.5 shrink-0 mt-0.5" />
-                )}
-                <span>{message.text}</span>
-              </div>
-            )}
+        {/* Main content grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          {/* Left Column: Form (5 cols) */}
+          <section className="lg:col-span-5 flex flex-col gap-6">
+            <div className="corporate-card bg-white rounded-xl p-6 border border-slate-200">
+              <h2 className="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
+                <UserPlus className="h-5 w-5 text-blue-900" />
+                Provision New User
+              </h2>
 
-            <form onSubmit={handleRegister} className="flex flex-col gap-4">
-              <div className="flex flex-col gap-1.5">
-                <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Email Address</label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-2.5 h-4 w-4 text-slate-500" />
-                  <input 
-                    type="email" 
-                    value={emailInput}
-                    onChange={(e) => setEmailInput(e.target.value)}
-                    required
-                    className="custom-input w-full pl-10"
-                    placeholder="colleague@company.com"
-                    disabled={actionPending}
-                  />
+              {message && (
+                <div className={`mb-5 p-4 rounded-lg border flex items-start gap-2.5 text-xs ${
+                  message.type === 'success' 
+                    ? 'bg-emerald-550/10 border-emerald-200 bg-emerald-50 text-emerald-800' 
+                    : 'bg-rose-50 border border-rose-100 text-rose-800'
+                }`}>
+                  {message.type === 'success' ? (
+                    <CheckCircle2 className="h-4.5 w-4.5 shrink-0 mt-0.5" />
+                  ) : (
+                    <AlertTriangle className="h-4.5 w-4.5 shrink-0 mt-0.5" />
+                  )}
+                  <span>{message.text}</span>
                 </div>
-              </div>
+              )}
 
-              {/* Password notice */}
-              <div className="text-[11px] text-slate-400 leading-normal bg-slate-900/60 p-3 rounded-lg border border-slate-800">
-                🔒 <strong>Password Provisioning:</strong> New accounts are automatically activated with their email pre-confirmed and a temporary password set to <strong>`Welcome@123`</strong>.
-              </div>
+              <form onSubmit={handleRegister} className="flex flex-col gap-4">
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-xs font-bold text-slate-655 uppercase tracking-wider">Email Address</label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                    <input 
+                      type="email" 
+                      value={emailInput}
+                      onChange={(e) => setEmailInput(e.target.value)}
+                      required
+                      className="custom-input w-full pl-10"
+                      placeholder="colleague@company.com"
+                      disabled={actionPending}
+                    />
+                  </div>
+                </div>
 
-              <button
-                type="submit"
-                disabled={actionPending || !emailInput}
-                className="w-full flex items-center justify-center gap-2 py-2.5 bg-gradient-to-r from-indigo-600 to-pink-600 hover:from-indigo-500 hover:to-pink-500 disabled:from-indigo-800 disabled:to-pink-800 text-white font-bold text-sm rounded-xl transition-all cursor-pointer disabled:cursor-not-allowed"
-              >
-                {actionPending ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Provisioning...
-                  </>
-                ) : (
-                  'Register User'
-                )}
-              </button>
-            </form>
-          </div>
-        </section>
+                {/* Password notice */}
+                <div className="text-[11px] text-slate-600 leading-normal bg-slate-50 p-3 rounded-lg border border-slate-200">
+                  🔒 <strong>Password Provisioning:</strong> New accounts are automatically activated with their email pre-confirmed and a temporary password set to <strong>`Welcome@123`</strong>.
+                </div>
 
-        {/* Right Column: User list (7 cols) */}
-        <section className="lg:col-span-7 flex flex-col gap-4">
-          <div className="glass-card rounded-2xl p-6">
-            <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-              <User className="h-5 w-5 text-pink-400" />
-              Registered Accounts ({profiles.length})
-            </h2>
+                <button
+                  type="submit"
+                  disabled={actionPending || !emailInput}
+                  className="w-full flex items-center justify-center gap-2 py-2.5 bg-blue-900 hover:bg-blue-800 disabled:bg-blue-900/60 text-white font-bold text-sm rounded-lg transition-all shadow-sm cursor-pointer disabled:cursor-not-allowed"
+                >
+                  {actionPending ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Provisioning...
+                    </>
+                  ) : (
+                    'Register User'
+                  )}
+                </button>
+              </form>
+            </div>
+          </section>
 
-            {loading ? (
-              <div className="flex flex-col items-center justify-center py-12 gap-2 text-slate-500">
-                <Loader2 className="h-8 w-8 animate-spin text-indigo-400" />
-                <span className="text-xs">Loading accounts...</span>
-              </div>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs border-collapse">
-                  <thead>
-                    <tr className="border-b border-slate-800">
-                      <th className="py-3 px-4 font-semibold text-slate-400">Email</th>
-                      <th className="py-3 px-4 font-semibold text-slate-400">Role</th>
-                      <th className="py-3 px-4 font-semibold text-slate-400">Date Added</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {profiles.map((profile) => (
-                      <tr key={profile.id} className="border-b border-slate-900 hover:bg-slate-900/40 transition-colors">
-                        <td className="py-3.5 px-4 text-slate-200 font-medium">{profile.email}</td>
-                        <td className="py-3.5 px-4">
-                          {profile.is_admin ? (
-                            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-pink-400 bg-pink-400/10 px-2 py-0.5 rounded-full border border-pink-400/25">
-                              <ShieldCheck className="h-3 w-3" />
-                              Admin
-                            </span>
-                          ) : (
-                            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-slate-400 bg-slate-400/10 px-2 py-0.5 rounded-full border border-slate-500/20">
-                              <Shield className="h-3 w-3" />
-                              User
-                            </span>
-                          )}
-                        </td>
-                        <td className="py-3.5 px-4 text-slate-400">
-                          {new Date(profile.created_at).toLocaleDateString()}
-                        </td>
+          {/* Right Column: User list (7 cols) */}
+          <section className="lg:col-span-7 flex flex-col gap-4">
+            <div className="corporate-card bg-white rounded-xl p-6 border border-slate-200">
+              <h2 className="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
+                <User className="h-5 w-5 text-blue-900" />
+                Registered Accounts ({profiles.length})
+              </h2>
+
+              {loading ? (
+                <div className="flex flex-col items-center justify-center py-12 gap-2 text-slate-400">
+                  <Loader2 className="h-8 w-8 animate-spin text-blue-900" />
+                  <span className="text-xs">Loading accounts...</span>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-xs border-collapse">
+                    <thead>
+                      <tr className="border-b border-slate-200">
+                        <th className="py-3 px-4 font-bold text-slate-500 uppercase tracking-wider">Email</th>
+                        <th className="py-3 px-4 font-bold text-slate-500 uppercase tracking-wider">Role</th>
+                        <th className="py-3 px-4 font-bold text-slate-500 uppercase tracking-wider">Date Added</th>
                       </tr>
-                    ))}
-                    {profiles.length === 0 && (
-                      <tr>
-                        <td colSpan={3} className="py-8 text-center text-slate-500">
-                          No registered accounts found.
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </div>
-        </section>
+                    </thead>
+                    <tbody>
+                      {profiles.map((profile) => (
+                        <tr key={profile.id} className="border-b border-slate-100 hover:bg-slate-50/50 transition-colors">
+                          <td className="py-3.5 px-4 text-slate-900 font-medium">{profile.email}</td>
+                          <td className="py-3.5 px-4">
+                            {profile.is_admin ? (
+                              <span className="inline-flex items-center gap-1 text-[10px] font-bold text-blue-800 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
+                                <ShieldCheck className="h-3 w-3" />
+                                Admin
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center gap-1 text-[10px] font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-full border border-slate-200">
+                                <Shield className="h-3 w-3" />
+                                User
+                              </span>
+                            )}
+                          </td>
+                          <td className="py-3.5 px-4 text-slate-500">
+                            {new Date(profile.created_at).toLocaleDateString()}
+                          </td>
+                        </tr>
+                      ))}
+                      {profiles.length === 0 && (
+                        <tr>
+                          <td colSpan={3} className="py-8 text-center text-slate-400">
+                            No registered accounts found.
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          </section>
 
+        </div>
       </div>
     </div>
   );
