@@ -29,6 +29,8 @@ import { createClient } from '@/utils/supabase/client';
 import { generateGmailReportHtml } from '../../utils/emailTemplate';
 import { ReportPayload, processReport } from '../../utils/reportEngine';
 
+export const dynamic = 'force-dynamic';
+
 export default function ReportDetailPage() {
   const params = useParams();
   const router = useRouter();

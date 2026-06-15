@@ -16,6 +16,8 @@ import {
 import { createClient } from '@/utils/supabase/client';
 import { registerUser } from './actions';
 
+export const dynamic = 'force-dynamic';
+
 interface Profile {
   id: string;
   email: string;

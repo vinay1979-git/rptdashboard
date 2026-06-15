@@ -21,6 +21,8 @@ import { logout } from '../login/actions';
 import { fetchReports, saveReport } from '../actions/reportActions';
 import { processReport, FeatureData, TaskData, RiskIssueData } from '../utils/reportEngine';
 
+export const dynamic = 'force-dynamic';
+
 export default function DashboardPage() {
   const router = useRouter();
   const supabase = createClient();
