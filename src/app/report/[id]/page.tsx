@@ -83,8 +83,13 @@ export default function ReportDetailPage() {
 
   if (!report) return null;
 
+  const reportTitle = report.features_data?.title || 'Executive Status Report';
+  const features = Array.isArray(report.features_data) 
+    ? report.features_data 
+    : (report.features_data?.features || []);
+
   const payload = processReport(
-    report.features_data || [],
+    features,
     report.tasks_data || [],
     [...(report.risks_data || []), ...(report.issues_data || [])],
     report.highlights || []
@@ -97,7 +102,7 @@ export default function ReportDetailPage() {
   });
 
   // Generate Email HTML
-  const emailHtml = generateGmailReportHtml(id, report.title, formattedDate, payload);
+  const emailHtml = generateGmailReportHtml(id, reportTitle, formattedDate, payload);
 
   // Copy Rich text for Gmail/Outlook
   const handleCopyRich = async () => {
@@ -150,7 +155,7 @@ export default function ReportDetailPage() {
           </button>
           <div>
             <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
-              {report.title}
+              {reportTitle}
             </h1>
             <p className="text-slate-500 text-xs mt-1">Compiled on {formattedDate}</p>
           </div>

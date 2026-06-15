@@ -7,7 +7,7 @@ export async function fetchReports() {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from('reports')
-    .select('id, title, created_at')
+    .select('id, features_data, created_at')
     .order('created_at', { ascending: false })
     .limit(10);
 
@@ -15,7 +15,12 @@ export async function fetchReports() {
     console.error('Error fetching historical reports:', error);
     return [];
   }
-  return data || [];
+  
+  return (data || []).map(r => ({
+    id: r.id,
+    created_at: r.created_at,
+    title: (r.features_data as any)?.title || 'Executive Status Report'
+  }));
 }
 
 export async function saveReport(
@@ -36,10 +41,12 @@ export async function saveReport(
   const { data: newReport, error } = await supabase
     .from('reports')
     .insert({
-      title,
       created_by: user.id,
       highlights,
-      features_data: featuresData,
+      features_data: {
+        title,
+        features: featuresData
+      },
       tasks_data: tasksData,
       risks_data: risksData,
       issues_data: issuesData,
