@@ -229,16 +229,15 @@ export default function DashboardPage() {
       const cleanIssues = sanitizeRisksIssues(rawIssues);
       const combinedRisksIssues = [...cleanRisks, ...cleanIssues];
 
-      // Run business logic calculations
-      const reportPayload = processReport(
+      // Save report payload to DB
+      const result = await saveReport(
+        reportTitle,
+        highlights.filter(h => h.trim() !== ''),
         cleanFeatures,
         cleanTasks,
-        combinedRisksIssues,
-        highlights
+        cleanRisks,
+        cleanIssues
       );
-
-      // Save report payload to DB
-      const result = await saveReport(reportTitle, reportPayload);
 
       if (result.error) {
         setErrorMessage(result.error);

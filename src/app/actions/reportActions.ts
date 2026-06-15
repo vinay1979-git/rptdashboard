@@ -18,7 +18,14 @@ export async function fetchReports() {
   return data || [];
 }
 
-export async function saveReport(title: string, reportPayload: any) {
+export async function saveReport(
+  title: string,
+  highlights: string[],
+  featuresData: any[],
+  tasksData: any[],
+  risksData: any[],
+  issuesData: any[]
+) {
   const supabase = await createClient();
   const { data: { user }, error: authError } = await supabase.auth.getUser();
 
@@ -31,7 +38,11 @@ export async function saveReport(title: string, reportPayload: any) {
     .insert({
       title,
       created_by: user.id,
-      data: reportPayload,
+      highlights,
+      features_data: featuresData,
+      tasks_data: tasksData,
+      risks_data: risksData,
+      issues_data: issuesData,
     })
     .select('id')
     .single();

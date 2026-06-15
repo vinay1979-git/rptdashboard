@@ -27,7 +27,7 @@ import {
 } from 'lucide-react';
 import { createClient } from '@/utils/supabase/client';
 import { generateGmailReportHtml } from '../../utils/emailTemplate';
-import { ReportPayload } from '../../utils/reportEngine';
+import { ReportPayload, processReport } from '../../utils/reportEngine';
 
 export default function ReportDetailPage() {
   const params = useParams();
@@ -83,7 +83,12 @@ export default function ReportDetailPage() {
 
   if (!report) return null;
 
-  const payload: ReportPayload = report.data;
+  const payload = processReport(
+    report.features_data || [],
+    report.tasks_data || [],
+    [...(report.risks_data || []), ...(report.issues_data || [])],
+    report.highlights || []
+  );
   const formattedDate = new Date(report.created_at).toLocaleDateString('en-US', {
     weekday: 'long',
     year: 'numeric',
