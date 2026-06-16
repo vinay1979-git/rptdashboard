@@ -321,15 +321,18 @@ export default function ReportClient() {
                   <div>
                     <h4 className="text-[10px] uppercase tracking-wider font-extrabold text-red-650 mb-2">Top Open Risks</h4>
                     <div className="flex flex-col gap-2">
-                      {payload.openRisks.map(r => (
-                        <div key={r.Nbr} className="p-3 bg-red-50/50 border border-red-100 rounded-lg shadow-sm">
-                          <div className="flex justify-between items-start text-xs font-bold text-slate-900 mb-1">
-                            <span>#{r.Nbr} - {(r.Description || '').length > 25 ? r.Description.substring(0, 25) + '...' : (r.Description || '')}</span>
-                            <span className="text-[9px] uppercase bg-red-100 text-red-800 px-1.5 py-0.5 rounded-md border border-red-200 font-bold">Open</span>
+                      {payload.openRisks.map(r => {
+                        const descText = r.description || r.Description || '';
+                        return (
+                          <div key={r.Nbr} className="p-3 bg-red-50/50 border border-red-100 rounded-lg shadow-sm">
+                            <div className="flex justify-between items-start text-xs font-bold text-slate-900 mb-1">
+                              <span>#{r.Nbr} - {descText.length > 25 ? descText.substring(0, 25) + '...' : descText}</span>
+                              <span className="text-[9px] uppercase bg-red-100 text-red-800 px-1.5 py-0.5 rounded-md border border-red-200 font-bold">Open</span>
+                            </div>
+                            <p className="text-[11px] text-slate-600 leading-normal line-clamp-2">{descText}</p>
                           </div>
-                          <p className="text-[11px] text-slate-600 leading-normal line-clamp-2">{r.Description}</p>
-                        </div>
-                      ))}
+                        );
+                      })}
                       {payload.openRisks.length === 0 && (
                         <span className="text-xs text-slate-400 italic">No active open risks.</span>
                       )}
@@ -340,15 +343,18 @@ export default function ReportClient() {
                   <div className="border-t border-slate-200 pt-4">
                     <h4 className="text-[10px] uppercase tracking-wider font-extrabold text-green-650 mb-2">Top Mitigated Risks</h4>
                     <div className="flex flex-col gap-2">
-                      {payload.mitigatedRisks.map(r => (
-                        <div key={r.Nbr} className="p-3 bg-green-50/50 border border-green-100 rounded-lg shadow-sm">
-                          <div className="flex justify-between items-start text-xs font-bold text-slate-900 mb-1">
-                            <span>#{r.Nbr} - {(r.Description || '').length > 25 ? r.Description.substring(0, 25) + '...' : (r.Description || '')}</span>
-                            <span className="text-[9px] uppercase bg-green-100 text-green-800 px-1.5 py-0.5 rounded-md border border-green-200 font-bold">Mitigated</span>
+                      {payload.mitigatedRisks.map(r => {
+                        const descText = r.description || r.Description || '';
+                        return (
+                          <div key={r.Nbr} className="p-3 bg-green-50/50 border border-green-100 rounded-lg shadow-sm">
+                            <div className="flex justify-between items-start text-xs font-bold text-slate-900 mb-1">
+                              <span>#{r.Nbr} - {descText.length > 25 ? descText.substring(0, 25) + '...' : descText}</span>
+                              <span className="text-[9px] uppercase bg-green-100 text-green-800 px-1.5 py-0.5 rounded-md border border-green-200 font-bold">Mitigated</span>
+                            </div>
+                            <p className="text-[11px] text-slate-600 leading-normal line-clamp-2">{r.Comments || 'Mitigated successfully.'}</p>
                           </div>
-                          <p className="text-[11px] text-slate-600 leading-normal line-clamp-2">{r.Comments || 'Mitigated successfully.'}</p>
-                        </div>
-                      ))}
+                        );
+                      })}
                       {payload.mitigatedRisks.length === 0 && (
                         <span className="text-xs text-slate-400 italic">No mitigated risks.</span>
                       )}

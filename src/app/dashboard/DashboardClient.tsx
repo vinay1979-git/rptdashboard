@@ -151,6 +151,7 @@ export default function DashboardClient() {
       Papa.parse(file, {
         header: true,
         skipEmptyLines: true,
+        transformHeader: (header) => header.trim(),
         complete: (results) => resolve(results.data),
         error: (err) => reject(err),
       });
@@ -187,17 +188,21 @@ export default function DashboardClient() {
   };
 
   const sanitizeRisksIssues = (raw: any[]): RiskIssueData[] => {
-    return raw.map(row => ({
-      Nbr: String(row['Nbr'] || row['nbr'] || '').trim(),
-      'Date Opened': String(row['Date Opened'] || row['date_opened'] || '').trim(),
-      Scope: String(row['Scope'] || row['scope'] || '').trim(),
-      Description: String(row['Description'] || row['description'] || '').trim(),
-      'Feature Name': String(row['Feature Name'] || row['feature_name'] || '').trim(),
-      'DevRev ID': String(row['DevRev ID'] || row['devrev_id'] || '').trim(),
-      Status: String(row['Status'] || row['status'] || '').trim(),
-      'Status Date': String(row['Status Date'] || row['status_date'] || '').trim(),
-      Comments: String(row['Comments'] || row['comments'] || '').trim(),
-    }));
+    return raw.map(row => {
+      const descriptionVal = String(row['Description'] || row['description'] || '').trim();
+      return {
+        Nbr: String(row['Nbr'] || row['nbr'] || '').trim(),
+        'Date Opened': String(row['Date Opened'] || row['date_opened'] || '').trim(),
+        Scope: String(row['Scope'] || row['scope'] || '').trim(),
+        Description: descriptionVal,
+        description: descriptionVal,
+        'Feature Name': String(row['Feature Name'] || row['feature_name'] || '').trim(),
+        'DevRev ID': String(row['DevRev ID'] || row['devrev_id'] || '').trim(),
+        Status: String(row['Status'] || row['status'] || '').trim(),
+        'Status Date': String(row['Status Date'] || row['status_date'] || '').trim(),
+        Comments: String(row['Comments'] || row['comments'] || '').trim(),
+      };
+    });
   };
 
   // 5. Submit Processing

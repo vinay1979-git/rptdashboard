@@ -25,6 +25,7 @@ export interface RiskIssueData {
   'Date Opened': string;
   Scope: string;
   Description: string;
+  description?: string;
   'Feature Name': string;
   'DevRev ID': string;
   Status: string;
