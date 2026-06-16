@@ -12,9 +12,9 @@ export default async function IndexPage() {
   }
 
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { session } } = await supabase.auth.getSession();
 
-  if (!user) {
+  if (!session) {
     redirect('/login');
   } else {
     redirect('/dashboard');
