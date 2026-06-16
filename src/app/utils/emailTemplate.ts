@@ -60,7 +60,7 @@ export function generateGmailReportHtml(
     .map(
       r => `
       <div style="background-color: #F9FAFC; border-left: 4px solid #ef4444; border-radius: 6px; padding: 10px; margin-bottom: 8px; border-top: 1px solid #E6E9EF; border-right: 1px solid #E6E9EF; border-bottom: 1px solid #E6E9EF;">
-        <div style="font-size: 12px; font-weight: bold; color: #030522; margin-bottom: 4px;">#${r.Nbr} - ${r.Scope}</div>
+        <div style="font-size: 12px; font-weight: bold; color: #030522; margin-bottom: 4px;">#${r.Nbr} - ${(r.Description || '').length > 25 ? r.Description.substring(0, 25) + '...' : (r.Description || '')}</div>
         <div style="font-size: 11px; color: #030522; line-height: 1.4;">${r.Description}</div>
         <div style="font-size: 10px; color: #6F7C95; margin-top: 6px;">Status: <span style="color: #ef4444; font-weight: bold;">Open</span> &bull; ${r['Status Date']}</div>
       </div>
@@ -73,7 +73,7 @@ export function generateGmailReportHtml(
     .map(
       r => `
       <div style="background-color: #F9FAFC; border-left: 4px solid #10b981; border-radius: 6px; padding: 10px; margin-bottom: 8px; border-top: 1px solid #E6E9EF; border-right: 1px solid #E6E9EF; border-bottom: 1px solid #E6E9EF;">
-        <div style="font-size: 12px; font-weight: bold; color: #030522; margin-bottom: 4px;">#${r.Nbr} - ${r.Scope}</div>
+        <div style="font-size: 12px; font-weight: bold; color: #030522; margin-bottom: 4px;">#${r.Nbr} - ${(r.Description || '').length > 25 ? r.Description.substring(0, 25) + '...' : (r.Description || '')}</div>
         <div style="font-size: 11px; color: #030522; line-height: 1.4;">${r.Description}</div>
         <div style="font-size: 10px; color: #6F7C95; margin-top: 6px;">Status: <span style="color: #10b981; font-weight: bold;">Mitigated</span> &bull; Comments: ${r.Comments || 'N/A'}</div>
       </div>
