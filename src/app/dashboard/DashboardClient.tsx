@@ -254,19 +254,19 @@ export default function DashboardClient() {
   };
 
   return (
-    <div className="min-h-screen flex bg-slate-50 text-slate-800">
+    <div className="min-h-screen flex bg-secondary text-foreground">
       
       {/* 1. SIDEBAR (Left 1/4) */}
-      <aside className="w-80 border-r border-slate-200 bg-slate-100 p-6 flex flex-col gap-6 shrink-0 h-screen sticky top-0 shadow-sm">
+      <aside className="w-80 border-r border-border bg-white p-6 flex flex-col gap-6 shrink-0 h-screen sticky top-0">
         
         {/* User profile section */}
-        <div className="flex items-center gap-3 border-b border-slate-200 pb-6">
-          <div className="p-2.5 bg-blue-50 text-blue-900 border border-blue-200 rounded-xl shadow-sm">
+        <div className="flex items-center gap-3 border-b border-border pb-6">
+          <div className="p-2.5 bg-secondary text-primary border border-border rounded-lg shadow-sm">
             <BarChart3 className="h-5 w-5" />
           </div>
           <div className="overflow-hidden">
-            <h3 className="font-extrabold text-sm text-slate-900 tracking-tight">Product Reporting Dashboard</h3>
-            <span className="text-[10px] text-slate-500 truncate block font-medium">{userEmail}</span>
+            <h3 className="font-extrabold text-sm text-foreground tracking-tight">Product Reporting Dashboard</h3>
+            <span className="text-[10px] text-muted-foreground truncate block font-medium">{userEmail}</span>
           </div>
         </div>
 
@@ -275,7 +275,7 @@ export default function DashboardClient() {
           {isAdmin && (
             <button
               onClick={() => router.push('/admin')}
-              className="flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-blue-900 bg-white hover:bg-slate-50 border border-slate-200 rounded-lg transition-all text-left cursor-pointer shadow-sm"
+              className="flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-primary bg-secondary hover:bg-white border border-border rounded-lg transition-all text-left cursor-pointer shadow-sm"
             >
               <Settings className="h-4 w-4" />
               Admin Management
@@ -285,14 +285,14 @@ export default function DashboardClient() {
 
         {/* Historical report logs */}
         <div className="flex-grow flex flex-col gap-2 min-h-0">
-          <h4 className="text-[10px] uppercase tracking-wider font-bold text-slate-400 flex items-center gap-1.5 mb-1">
+          <h4 className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground flex items-center gap-1.5 mb-1">
             <History className="h-3 w-3" />
             Historical Reports
           </h4>
           
           {loadingHistory ? (
-            <div className="flex items-center gap-2 text-xs text-slate-400 py-4">
-              <Loader2 className="h-4.5 w-4.5 animate-spin text-blue-900" />
+            <div className="flex items-center gap-2 text-xs text-muted-foreground py-4">
+              <Loader2 className="h-4.5 w-4.5 animate-spin text-primary" />
               <span>Fetching logs...</span>
             </div>
           ) : (
@@ -301,18 +301,18 @@ export default function DashboardClient() {
                 <button
                   key={report.id}
                   onClick={() => router.push(`/report/${report.id}`)}
-                  className="text-left p-3 rounded-lg bg-white hover:bg-slate-50 border border-slate-200 transition-all text-xs group cursor-pointer shadow-sm"
+                  className="text-left p-3 rounded-lg bg-secondary hover:bg-white border border-border transition-all text-xs group cursor-pointer shadow-sm"
                 >
-                  <span className="text-slate-800 font-bold block truncate group-hover:text-blue-900 transition-colors">
+                  <span className="text-foreground font-bold block truncate group-hover:text-primary transition-colors">
                     {report.title}
                   </span>
-                  <span className="text-[10px] text-slate-500 mt-1 block">
+                  <span className="text-[10px] text-muted-foreground mt-1 block">
                     {new Date(report.created_at).toLocaleDateString()}
                   </span>
                 </button>
               ))}
               {historyList.length === 0 && (
-                <span className="text-xs text-slate-500 py-4 italic">No reports generated yet.</span>
+                <span className="text-xs text-muted-foreground py-4 italic">No reports generated yet.</span>
               )}
             </div>
           )}
@@ -321,7 +321,7 @@ export default function DashboardClient() {
         {/* Sign out */}
         <button
           onClick={() => logout()}
-          className="flex items-center justify-center gap-2 py-2 text-xs font-bold text-slate-650 hover:text-slate-900 bg-white hover:bg-slate-50 border border-slate-200 rounded-lg transition-all cursor-pointer shadow-sm"
+          className="flex items-center justify-center gap-2 py-2 text-xs font-bold text-muted-foreground hover:text-foreground bg-secondary hover:bg-white border border-border rounded-lg transition-all cursor-pointer shadow-sm"
         >
           <LogOut className="h-3.5 w-3.5" />
           Sign Out
