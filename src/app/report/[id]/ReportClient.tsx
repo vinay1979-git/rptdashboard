@@ -378,7 +378,7 @@ export default function ReportClient() {
               <table className="w-full text-left text-xs border-collapse">
                 <thead>
                   <tr className="border-b border-slate-200">
-                    <th className="py-3 px-4 font-bold text-slate-500 uppercase tracking-wider">ID</th>
+                    <th className="py-3 px-4 font-bold text-slate-500 uppercase tracking-wider">DevRev ID</th>
                     <th className="py-3 px-4 font-bold text-slate-500 uppercase tracking-wider">Feature Name</th>
                     <th className="py-3 px-4 font-bold text-slate-500 uppercase tracking-wider">Owner</th>
                     <th className="py-3 px-4 font-bold text-slate-500 uppercase tracking-wider">Goal Outcome</th>
@@ -393,7 +393,7 @@ export default function ReportClient() {
                       onDoubleClick={() => setSelectedFeature(f)}
                       className="border-b border-slate-100 hover:bg-slate-50/80 transition-all cursor-pointer group select-none"
                     >
-                      <td className="py-3.5 px-4 font-mono text-slate-500 group-hover:text-blue-900 transition-colors">{f['Part id']}</td>
+                      <td className="py-3.5 px-4 font-mono text-slate-500 group-hover:text-blue-900 transition-colors">{f.devRevId || f['Part id']}</td>
                       <td className="py-3.5 px-4 font-bold text-slate-900 group-hover:text-blue-900 transition-colors">{f.Name}</td>
                       <td className="py-3.5 px-4 text-slate-600 font-medium">{f['Owner[0]']}</td>
                       <td className="py-3.5 px-4 text-slate-600 font-medium">{f['Goal[0]'] || 'N/A'}</td>
@@ -485,7 +485,7 @@ export default function ReportClient() {
             <div className="flex justify-between items-start border-b border-slate-250 pb-4 mb-5">
               <div>
                 <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider font-mono">
-                  Capability Detail: {selectedFeature['Part id']}
+                  Capability Detail: {selectedFeature.devRevId || selectedFeature['Part id']}
                 </span>
                 <h3 className="text-lg font-extrabold text-slate-900 mt-1 leading-snug tracking-tight">
                   {selectedFeature.Name}

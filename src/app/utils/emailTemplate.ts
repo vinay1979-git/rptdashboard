@@ -90,7 +90,7 @@ export function generateGmailReportHtml(
 
       return `
       <tr style="border-bottom: 1px solid #E6E9EF;">
-        <td style="padding: 10px 8px; font-size: 12px; color: #6F7C95; font-family: monospace;">${f['Part id']}</td>
+        <td style="padding: 10px 8px; font-size: 12px; color: #6F7C95; font-family: monospace;">${f.devRevId || f['Part id']}</td>
         <td style="padding: 10px 8px; font-size: 12px;">
           <a href="${reportUrl}" style="color: #3B42C4; text-decoration: none; font-weight: bold;">
             ${f.Name}
@@ -214,7 +214,7 @@ export function generateGmailReportHtml(
             <table cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse: collapse;">
               <thead>
                 <tr style="border-bottom: 2px solid #E6E9EF;">
-                  <th align="left" style="padding: 8px; font-size: 11px; color: #6F7C95; text-transform: uppercase; font-weight: bold; width: 20%;">ID</th>
+                  <th align="left" style="padding: 8px; font-size: 11px; color: #6F7C95; text-transform: uppercase; font-weight: bold; width: 20%;">DevRev ID</th>
                   <th align="left" style="padding: 8px; font-size: 11px; color: #6F7C95; text-transform: uppercase; font-weight: bold; width: 60%;">Feature Name</th>
                   <th align="right" style="padding: 8px; font-size: 11px; color: #6F7C95; text-transform: uppercase; font-weight: bold; width: 20%;">Status</th>
                 </tr>

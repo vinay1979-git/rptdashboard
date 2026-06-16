@@ -158,16 +158,20 @@ export default function DashboardClient() {
   };
 
   const sanitizeFeatures = (raw: any[]): FeatureData[] => {
-    return raw.map(row => ({
-      'Part id': String(row['Part id'] || row['part_id'] || '').trim(),
-      Name: String(row['Name'] || row['name'] || '').slice(0, 50).trim(),
-      'Owner[0]': String(row['Owner[0]'] || row['owner'] || '').trim(),
-      'Theme[0]': String(row['Theme[0]'] || row['theme'] || '').trim(),
-      'Goal[0]': String(row['Goal[0]'] || row['goal'] || '').trim(),
-      'Service (Temp)[0]': String(row['Service (Temp)[0]'] || row['service'] || '').trim(),
-      'Created date': String(row['Created date'] || row['created_date'] || '').trim(),
-      'Tags[0]': String(row['Tags[0]'] || row['tags'] || '').trim(),
-    }));
+    return raw.map(row => {
+      const partId = String(row['Part ID'] || row['Part id'] || row['part_id'] || row['Part-ID'] || '').trim();
+      return {
+        'Part id': partId,
+        devRevId: partId,
+        Name: String(row['Name'] || row['name'] || '').slice(0, 50).trim(),
+        'Owner[0]': String(row['Owner[0]'] || row['owner'] || '').trim(),
+        'Theme[0]': String(row['Theme[0]'] || row['theme'] || '').trim(),
+        'Goal[0]': String(row['Goal[0]'] || row['goal'] || '').trim(),
+        'Service (Temp)[0]': String(row['Service (Temp)[0]'] || row['service'] || '').trim(),
+        'Created date': String(row['Created date'] || row['created_date'] || '').trim(),
+        'Tags[0]': String(row['Tags[0]'] || row['tags'] || '').trim(),
+      };
+    });
   };
 
   const sanitizeTasks = (raw: any[]): TaskData[] => {
