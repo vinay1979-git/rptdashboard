@@ -58,7 +58,7 @@ export default function LoginClient() {
                   type="email" 
                   name="email"
                   required
-                  className="custom-input w-full pl-10"
+                  className="custom-input w-full !pl-10"
                   placeholder="name@example.com"
                 />
               </div>
@@ -74,7 +74,7 @@ export default function LoginClient() {
                   name="password"
                   required
                   defaultValue="Welcome@123"
-                  className="custom-input w-full pl-10"
+                  className="custom-input w-full !pl-10"
                   placeholder="••••••••"
                 />
               </div>
