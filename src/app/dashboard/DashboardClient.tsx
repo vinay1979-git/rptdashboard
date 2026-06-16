@@ -146,13 +146,21 @@ export default function DashboardClient() {
   };
 
   // 4. CSV Client-side Parsers & Sanitizers
-  const parseCsvFile = (file: File): Promise<any[]> => {
+  const parseCsvFile = (file: File, type?: string): Promise<any[]> => {
     return new Promise((resolve, reject) => {
       Papa.parse(file, {
         header: true,
         skipEmptyLines: true,
         transformHeader: (header) => header.trim(),
-        complete: (results) => resolve(results.data),
+        complete: (results) => {
+          const data = results.data.map((row: any) => {
+            if (type) {
+              row.type = type;
+            }
+            return row;
+          });
+          resolve(data);
+        },
         error: (err) => reject(err),
       });
     });
@@ -191,6 +199,7 @@ export default function DashboardClient() {
     return raw.map(row => {
       const descriptionVal = String(row['Description'] || row['description'] || '').trim();
       return {
+        type: row.type || '',
         Nbr: String(row['Nbr'] || row['nbr'] || '').trim(),
         'Date Opened': String(row['Date Opened'] || row['date_opened'] || '').trim(),
         Scope: String(row['Scope'] || row['scope'] || '').trim(),
@@ -227,8 +236,8 @@ export default function DashboardClient() {
       let rawRisks: any[] = [];
       let rawIssues: any[] = [];
 
-      if (files.risks) rawRisks = await parseCsvFile(files.risks);
-      if (files.issues) rawIssues = await parseCsvFile(files.issues);
+      if (files.risks) rawRisks = await parseCsvFile(files.risks, 'Risk');
+      if (files.issues) rawIssues = await parseCsvFile(files.issues, 'Issue');
 
       // Sanitize fields
       const cleanFeatures = sanitizeFeatures(rawFeatures);

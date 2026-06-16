@@ -91,7 +91,10 @@ export default function ReportClient() {
   const payload = processReport(
     features,
     report.tasks_data || [],
-    [...(report.risks_data || []), ...(report.issues_data || [])],
+    [
+      ...(report.risks_data || []).map((r: any) => ({ ...r, type: r.type || 'Risk' })),
+      ...(report.issues_data || []).map((i: any) => ({ ...i, type: i.type || 'Issue' }))
+    ],
     report.highlights || []
   );
   const formattedDate = new Date(report.created_at).toLocaleDateString('en-US', {
@@ -327,7 +330,10 @@ export default function ReportClient() {
                           <div key={r.Nbr} className="p-3 bg-red-50/50 border border-red-100 rounded-lg shadow-sm">
                             <div className="flex justify-between items-start text-xs font-bold text-slate-900 mb-1">
                               <span>#{r.Nbr} - {descText.length > 25 ? descText.substring(0, 25) + '...' : descText}</span>
-                              <span className="text-[9px] uppercase bg-red-100 text-red-800 px-1.5 py-0.5 rounded-md border border-red-200 font-bold">Open</span>
+                              <div className="flex gap-1 items-center">
+                                <span className="text-[9px] uppercase bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded-md border border-slate-200 font-bold">{r.type || 'Risk'}</span>
+                                <span className="text-[9px] uppercase bg-red-100 text-red-800 px-1.5 py-0.5 rounded-md border border-red-200 font-bold">Open</span>
+                              </div>
                             </div>
                             <p className="text-[11px] text-slate-600 leading-normal line-clamp-2">{descText}</p>
                           </div>
@@ -349,7 +355,10 @@ export default function ReportClient() {
                           <div key={r.Nbr} className="p-3 bg-green-50/50 border border-green-100 rounded-lg shadow-sm">
                             <div className="flex justify-between items-start text-xs font-bold text-slate-900 mb-1">
                               <span>#{r.Nbr} - {descText.length > 25 ? descText.substring(0, 25) + '...' : descText}</span>
-                              <span className="text-[9px] uppercase bg-green-100 text-green-800 px-1.5 py-0.5 rounded-md border border-green-200 font-bold">Mitigated</span>
+                              <div className="flex gap-1 items-center">
+                                <span className="text-[9px] uppercase bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded-md border border-slate-200 font-bold">{r.type || 'Risk'}</span>
+                                <span className="text-[9px] uppercase bg-green-100 text-green-800 px-1.5 py-0.5 rounded-md border border-green-200 font-bold">Mitigated</span>
+                              </div>
                             </div>
                             <p className="text-[11px] text-slate-600 leading-normal line-clamp-2">{r.Comments || 'Mitigated successfully.'}</p>
                           </div>

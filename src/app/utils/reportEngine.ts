@@ -21,6 +21,7 @@ export interface TaskData {
 }
 
 export interface RiskIssueData {
+  type?: string;
   Nbr: string;
   'Date Opened': string;
   Scope: string;
