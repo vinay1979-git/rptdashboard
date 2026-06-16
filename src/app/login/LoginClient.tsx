@@ -32,7 +32,7 @@ export default function LoginClient() {
             <Mail className="h-6 w-6" />
           </div>
           <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
-            rptdashboard
+            Product Reporting Dashboard
           </h1>
           <p className="text-slate-500 text-xs">Executive Reporting Hub</p>
         </div>

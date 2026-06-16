@@ -265,7 +265,7 @@ export default function DashboardClient() {
             <BarChart3 className="h-5 w-5" />
           </div>
           <div className="overflow-hidden">
-            <h3 className="font-extrabold text-sm text-slate-900 tracking-tight">rptdashboard</h3>
+            <h3 className="font-extrabold text-sm text-slate-900 tracking-tight">Product Reporting Dashboard</h3>
             <span className="text-[10px] text-slate-500 truncate block font-medium">{userEmail}</span>
           </div>
         </div>

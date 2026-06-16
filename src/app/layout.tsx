@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "rptdashboard - Executive Status Reports",
+  title: "Product Reporting Dashboard - Executive Status Reports",
   description: "Executive reporting dashboard and status compiler",
 };
 
