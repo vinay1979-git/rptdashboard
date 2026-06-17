@@ -2,12 +2,35 @@
 
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
+import { FeatureData, TaskData, RiskIssueData } from '@/app/utils/reportEngine';
+
+export interface Report {
+  id: string;
+  created_at: string;
+  created_by?: string;
+  highlights: string[];
+  features_data: {
+    title: string;
+    features: FeatureData[];
+  };
+  tasks_data: TaskData[];
+  risks_data: RiskIssueData[];
+  issues_data: RiskIssueData[];
+  report_type: string;
+}
+
+export interface HistoricalReportSummary {
+  id: string;
+  created_at: string;
+  title: string;
+  report_type: string;
+}
 
 export async function fetchReports() {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from('reports')
-    .select('id, features_data, created_at')
+    .select('id, features_data, created_at, report_type')
     .order('created_at', { ascending: false })
     .limit(10);
 
@@ -16,20 +39,24 @@ export async function fetchReports() {
     return [];
   }
   
-  return (data || []).map(r => ({
-    id: r.id,
-    created_at: r.created_at,
-    title: (r.features_data as any)?.title || 'Executive Status Report'
-  }));
+  return (data || []).map(r => {
+    const type = r.report_type || 'Product Grow report';
+    return {
+      id: r.id,
+      created_at: r.created_at,
+      title: (r.features_data as { title: string })?.title || 'Executive Status Report',
+      report_type: type
+    };
+  });
 }
 
 export async function saveReport(
   title: string,
   highlights: string[],
-  featuresData: any[],
-  tasksData: any[],
-  risksData: any[],
-  issuesData: any[]
+  featuresData: FeatureData[],
+  tasksData: TaskData[],
+  risksData: RiskIssueData[],
+  issuesData: RiskIssueData[]
 ) {
   const supabase = await createClient();
   const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -50,6 +77,7 @@ export async function saveReport(
       tasks_data: tasksData,
       risks_data: risksData,
       issues_data: issuesData,
+      report_type: 'Product Grow report'
     })
     .select('id')
     .single();

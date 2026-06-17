@@ -18,8 +18,8 @@ import {
 } from 'lucide-react';
 import { createClient } from '@/utils/supabase/client';
 import { logout } from '../login/actions';
-import { fetchReports, saveReport } from '../actions/reportActions';
-import { processReport, FeatureData, TaskData, RiskIssueData } from '../utils/reportEngine';
+import { fetchReports, saveReport, HistoricalReportSummary } from '../actions/reportActions';
+import { FeatureData, TaskData, RiskIssueData } from '../utils/reportEngine';
 
 export default function DashboardClient() {
   const router = useRouter();
@@ -28,7 +28,7 @@ export default function DashboardClient() {
   // Navigation / Auth States
   const [isAdmin, setIsAdmin] = useState(false);
   const [userEmail, setUserEmail] = useState('');
-  const [historyList, setHistoryList] = useState<any[]>([]);
+  const [historyList, setHistoryList] = useState<HistoricalReportSummary[]>([]);
   const [loadingHistory, setLoadingHistory] = useState(true);
 
   // Form inputs
@@ -146,14 +146,14 @@ export default function DashboardClient() {
   };
 
   // 4. CSV Client-side Parsers & Sanitizers
-  const parseCsvFile = (file: File, type?: string): Promise<any[]> => {
+  const parseCsvFile = (file: File, type?: string): Promise<Record<string, string>[]> => {
     return new Promise((resolve, reject) => {
       Papa.parse(file, {
         header: true,
         skipEmptyLines: true,
         transformHeader: (header) => header.trim(),
         complete: (results) => {
-          const data = results.data.map((row: any) => {
+          const data = (results.data as Record<string, string>[]).map((row) => {
             if (type) {
               row.type = type;
             }
@@ -166,7 +166,7 @@ export default function DashboardClient() {
     });
   };
 
-  const sanitizeFeatures = (raw: any[]): FeatureData[] => {
+  const sanitizeFeatures = (raw: Record<string, string>[]): FeatureData[] => {
     return raw.map(row => {
       const partId = String(row['Part ID'] || row['Part id'] || row['part_id'] || row['Part-ID'] || '').trim();
       return {
@@ -183,7 +183,7 @@ export default function DashboardClient() {
     });
   };
 
-  const sanitizeTasks = (raw: any[]): TaskData[] => {
+  const sanitizeTasks = (raw: Record<string, string>[]): TaskData[] => {
     return raw.map(row => ({
       Items: String(row['Items'] || row['items'] || '').trim(),
       Title: String(row['Title'] || row['title'] || '').slice(0, 50).trim(),
@@ -195,7 +195,7 @@ export default function DashboardClient() {
     }));
   };
 
-  const sanitizeRisksIssues = (raw: any[]): RiskIssueData[] => {
+  const sanitizeRisksIssues = (raw: Record<string, string>[]): RiskIssueData[] => {
     return raw.map(row => {
       const descriptionVal = String(row['Description'] || row['description'] || '').trim();
       return {
@@ -233,8 +233,8 @@ export default function DashboardClient() {
       const rawFeatures = await parseCsvFile(files.features);
       const rawTasks = await parseCsvFile(files.tasks);
       
-      let rawRisks: any[] = [];
-      let rawIssues: any[] = [];
+      let rawRisks: Record<string, string>[] = [];
+      let rawIssues: Record<string, string>[] = [];
 
       if (files.risks) rawRisks = await parseCsvFile(files.risks, 'Risk');
       if (files.issues) rawIssues = await parseCsvFile(files.issues, 'Issue');
@@ -264,9 +264,9 @@ export default function DashboardClient() {
         router.push(`/report/${result.id}`);
       }
 
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
-      setErrorMessage(err.message || 'Error processing CSV datasets.');
+      setErrorMessage(err instanceof Error ? err.message : 'Error processing CSV datasets.');
       setIsSubmitting(false);
     }
   };

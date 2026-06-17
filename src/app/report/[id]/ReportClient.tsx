@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, startTransition } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { 
   BarChart, 
@@ -18,7 +18,6 @@ import {
   Check, 
   Mail, 
   AlertTriangle, 
-  ShieldCheck, 
   Briefcase,
   Layers,
   X,
@@ -27,7 +26,8 @@ import {
 } from 'lucide-react';
 import { createClient } from '@/utils/supabase/client';
 import { generateGmailReportHtml } from '../../utils/emailTemplate';
-import { ReportPayload, processReport } from '../../utils/reportEngine';
+import { processReport, MappedFeature } from '../../utils/reportEngine';
+import { Report } from '@/app/actions/reportActions';
 
 export default function ReportClient() {
   const params = useParams();
@@ -36,12 +36,12 @@ export default function ReportClient() {
   const supabase = createClient();
 
   // Load States
-  const [report, setReport] = useState<any>(null);
+  const [report, setReport] = useState<Report | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'interactive' | 'gmail'>('interactive');
   
   // Interactive Modal / Drawer State
-  const [selectedFeature, setSelectedFeature] = useState<any>(null);
+  const [selectedFeature, setSelectedFeature] = useState<MappedFeature | null>(null);
 
   // Copy states
   const [copiedRich, setCopiedRich] = useState(false);
@@ -66,7 +66,8 @@ export default function ReportClient() {
           .single();
         
         if (error) throw error;
-        setReport(data);
+        const type = data.report_type || 'Product Grow report';
+        setReport({ ...data, report_type: type });
 
         // Fetch previous report ID (older)
         const { data: prevData } = await supabase
@@ -119,8 +120,8 @@ export default function ReportClient() {
     features,
     report.tasks_data || [],
     [
-      ...(report.risks_data || []).map((r: any) => ({ ...r, type: r.type || 'Risk' })),
-      ...(report.issues_data || []).map((i: any) => ({ ...i, type: i.type || 'Issue' }))
+      ...(report.risks_data || []).map((r) => ({ ...r, type: r.type || 'Risk' })),
+      ...(report.issues_data || []).map((i) => ({ ...i, type: i.type || 'Issue' }))
     ],
     report.highlights || []
   );
@@ -637,7 +638,7 @@ export default function ReportClient() {
                       </tr>
                     </thead>
                     <tbody>
-                      {selectedFeature.tasks.map((task: any) => {
+                      {selectedFeature.tasks.map((task) => {
                         const isClosed = task.Stage?.toLowerCase() === 'closed' || task.Stage?.toLowerCase() === 'approved';
                         const isOpen = task.Stage?.toLowerCase() === 'open';
 
