@@ -169,21 +169,38 @@ export default function ReportClient() {
   };
 
   const confirmDeleteReport = async () => {
-    setShowDeleteModal(false);
     try {
-      const { error } = await supabase
+      // 1. Manually clear child records first to avoid FK constraint blocks
+      const { error: issuesErr } = await supabase
+        .from('issues')
+        .delete()
+        .eq('report_id', id);
+      if (issuesErr) throw issuesErr;
+
+      const { error: risksErr } = await supabase
+        .from('risks')
+        .delete()
+        .eq('report_id', id);
+      if (risksErr) throw risksErr;
+
+      const { error: reportsErr } = await supabase
         .from('reports')
         .delete()
         .eq('id', id);
+      if (reportsErr) throw reportsErr;
 
-      if (error) throw error;
-
+      // 2. Upon successful deletion
+      setShowDeleteModal(false);
       setShowSuccessModal(true);
+
+      // 3. Wait 2000ms, refresh router cache, and redirect to dashboard
       setTimeout(() => {
+        router.refresh();
         router.push('/dashboard');
-      }, 1500);
+      }, 2000);
     } catch (err: any) {
       console.error("Deletion failed:", err);
+      setShowDeleteModal(false);
     }
   };
 
