@@ -47,6 +47,10 @@ export default function ReportClient() {
   const [copiedRich, setCopiedRich] = useState(false);
   const [copiedHtml, setCopiedHtml] = useState(false);
 
+  // Adjacent Report IDs
+  const [prevId, setPrevId] = useState<string | null>(null);
+  const [nextId, setNextId] = useState<string | null>(null);
+
   // Fetch Report Data from Supabase
   useEffect(() => {
     const fetchReportData = async () => {
@@ -59,6 +63,25 @@ export default function ReportClient() {
         
         if (error) throw error;
         setReport(data);
+
+        // Fetch previous report ID (older)
+        const { data: prevData } = await supabase
+          .from('reports')
+          .select('id')
+          .lt('created_at', data.created_at)
+          .order('created_at', { ascending: false })
+          .limit(1);
+        
+        // Fetch next report ID (newer)
+        const { data: nextData } = await supabase
+          .from('reports')
+          .select('id')
+          .gt('created_at', data.created_at)
+          .order('created_at', { ascending: true })
+          .limit(1);
+
+        setPrevId(prevData && prevData.length > 0 ? prevData[0].id : null);
+        setNextId(nextData && nextData.length > 0 ? nextData[0].id : null);
       } catch (err) {
         console.error('Error fetching report details:', err);
         router.push('/dashboard');
@@ -180,6 +203,32 @@ export default function ReportClient() {
           </button>
         </div>
       </header>
+
+      {/* Report Navigation Bar */}
+      <div className="flex justify-between items-center bg-white border border-slate-200 px-4 py-3 rounded-xl shadow-sm -mt-2">
+        <button
+          onClick={() => prevId && router.push(`/report/${prevId}`)}
+          disabled={!prevId}
+          className={`px-4 py-2 text-xs font-bold border rounded-lg transition-all shadow-sm ${
+            prevId 
+              ? 'border-slate-200 text-[#475569] hover:bg-[#F9FAFC] hover:border-[#E6E9EF] cursor-pointer' 
+              : 'border-slate-100 text-slate-300 bg-slate-50 cursor-not-allowed'
+          }`}
+        >
+          &larr; Previous Report
+        </button>
+        <button
+          onClick={() => nextId && router.push(`/report/${nextId}`)}
+          disabled={!nextId}
+          className={`px-4 py-2 text-xs font-bold border rounded-lg transition-all shadow-sm ${
+            nextId 
+              ? 'border-slate-200 text-[#475569] hover:bg-[#F9FAFC] hover:border-[#E6E9EF] cursor-pointer' 
+              : 'border-slate-100 text-slate-300 bg-slate-50 cursor-not-allowed'
+          }`}
+        >
+          Next Report &rarr;
+        </button>
+      </div>
 
       {/* Conditional Tab Rendering */}
       {activeTab === 'interactive' ? (
