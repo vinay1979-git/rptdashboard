@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Product Reporting Dashboard - Executive Status Reports",
@@ -13,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full bg-slate-50 antialiased">
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className={`${inter.className} bg-[#F9FAFC] text-[#030522] antialiased min-h-screen`}>{children}</body>
     </html>
   );
 }
