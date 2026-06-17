@@ -51,6 +51,10 @@ export default function ReportClient() {
   const [prevId, setPrevId] = useState<string | null>(null);
   const [nextId, setNextId] = useState<string | null>(null);
 
+  // Delete / Success Modals States
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+
   // Fetch Report Data from Supabase
   useEffect(() => {
     const fetchReportData = async () => {
@@ -164,14 +168,9 @@ export default function ReportClient() {
     }
   };
 
-  const handleDeleteReport = async () => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this report? All associated data will be permanently removed."
-    );
-    if (!confirmed) return;
-
+  const confirmDeleteReport = async () => {
+    setShowDeleteModal(false);
     try {
-      setLoading(true);
       const { error } = await supabase
         .from('reports')
         .delete()
@@ -179,12 +178,12 @@ export default function ReportClient() {
 
       if (error) throw error;
 
-      alert("Report deleted successfully.");
-      router.push('/dashboard');
+      setShowSuccessModal(true);
+      setTimeout(() => {
+        router.push('/dashboard');
+      }, 1500);
     } catch (err: any) {
       console.error("Deletion failed:", err);
-      alert(`Deletion failed: ${err.message || err}`);
-      setLoading(false);
     }
   };
 
@@ -563,10 +562,10 @@ export default function ReportClient() {
       {/* Destructive Deletion Section */}
       <div className="border-t border-[#E6E9EF] pt-6 flex justify-end">
         <button
-          onClick={handleDeleteReport}
-          className="px-4 py-2 border border-red-200 hover:border-red-650 text-red-600 hover:bg-red-50 text-xs font-bold rounded-md transition-all cursor-pointer shadow-sm flex items-center gap-1.5"
+          onClick={() => setShowDeleteModal(true)}
+          className="px-4 py-2 border border-red-250 hover:border-red-650 text-red-600 hover:bg-red-50 text-xs font-bold rounded-md transition-all cursor-pointer shadow-sm flex items-center gap-1.5"
         >
-          Delete Historic Report
+          Delete Report
         </button>
       </div>
 
@@ -665,6 +664,44 @@ export default function ReportClient() {
               </button>
             </div>
 
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-[#030522]/20 backdrop-blur-sm z-50 flex items-center justify-center">
+          <div className="bg-white border border-[#E6E9EF] rounded-lg shadow-xl p-6 w-full max-w-md mx-4 animate-fade-in">
+            <h3 className="text-[#030522] font-semibold text-lg">Delete Report</h3>
+            <p className="text-[#6F7C95] text-sm mt-2">
+              Are you sure you want to permanently delete this report? All associated data will be removed. This action cannot be undone.
+            </p>
+            <div className="mt-6 flex justify-end gap-3">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="border border-[#E6E9EF] text-[#030522] bg-white hover:bg-[#F9FAFC] px-4 py-2 rounded-md text-xs font-bold transition-all cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDeleteReport}
+                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md font-medium text-xs transition-all cursor-pointer"
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Success Modal */}
+      {showSuccessModal && (
+        <div className="fixed inset-0 bg-[#030522]/20 backdrop-blur-sm z-50 flex items-center justify-center">
+          <div className="bg-white border border-[#E6E9EF] rounded-lg shadow-xl p-6 w-full max-w-md mx-4 animate-fade-in">
+            <h3 className="text-[#030522] font-semibold text-lg">Report Deleted</h3>
+            <p className="text-[#6F7C95] text-sm mt-2">
+              The report and all associated data have been successfully removed.
+            </p>
           </div>
         </div>
       )}
