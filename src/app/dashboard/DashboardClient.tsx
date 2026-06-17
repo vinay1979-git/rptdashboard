@@ -272,19 +272,19 @@ export default function DashboardClient() {
   };
 
   return (
-    <div className="min-h-screen flex bg-secondary text-foreground">
+    <div className="min-h-screen flex bg-[#F9FAFC] text-[#030522]">
       
       {/* 1. SIDEBAR (Left 1/4) */}
-      <aside className="w-80 border-r border-border bg-white p-6 flex flex-col gap-6 shrink-0 h-screen sticky top-0">
+      <aside className="w-80 border-r border-[#E6E9EF] bg-white p-6 flex flex-col gap-6 shrink-0 h-screen sticky top-0">
         
         {/* User profile section */}
-        <div className="flex items-center gap-3 border-b border-border pb-6">
-          <div className="p-2.5 bg-secondary text-primary border border-border rounded-lg shadow-sm">
+        <div className="flex items-center gap-3 border-b border-[#E6E9EF] pb-6">
+          <div className="p-2.5 bg-[#F9FAFC] text-[#3B42C4] border border-[#E6E9EF] rounded-md shadow-sm">
             <BarChart3 className="h-5 w-5" />
           </div>
           <div className="overflow-hidden">
-            <h3 className="font-extrabold text-sm text-foreground tracking-tight">Product Reporting Dashboard</h3>
-            <span className="text-[10px] text-muted-foreground truncate block font-medium">{userEmail}</span>
+            <h3 className="font-extrabold text-sm text-[#030522] tracking-tight">Product Reporting Dashboard</h3>
+            <span className="text-[10px] text-[#6F7C95] truncate block font-medium">{userEmail}</span>
           </div>
         </div>
 
@@ -293,7 +293,7 @@ export default function DashboardClient() {
           {isAdmin && (
             <button
               onClick={() => router.push('/admin')}
-              className="flex items-center gap-2.5 px-3 py-2 text-xs font-bold text-primary bg-secondary hover:bg-white border border-border rounded-lg transition-all text-left cursor-pointer shadow-sm"
+              className="flex items-center gap-2.5 px-3 py-2 text-xs font-bold border border-[#E6E9EF] text-[#030522] hover:bg-[#F9FAFC] rounded-md transition-all text-left cursor-pointer shadow-sm w-full"
             >
               <Settings className="h-4 w-4" />
               Admin Management
@@ -303,14 +303,14 @@ export default function DashboardClient() {
 
         {/* Historical report logs */}
         <div className="flex-grow flex flex-col gap-2 min-h-0">
-          <h4 className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground flex items-center gap-1.5 mb-1">
+          <h4 className="text-[10px] uppercase tracking-wider font-bold text-[#6F7C95] flex items-center gap-1.5 mb-1">
             <History className="h-3 w-3" />
             Historical Reports
           </h4>
           
           {loadingHistory ? (
-            <div className="flex items-center gap-2 text-xs text-muted-foreground py-4">
-              <Loader2 className="h-4.5 w-4.5 animate-spin text-primary" />
+            <div className="flex items-center gap-2 text-xs text-[#6F7C95] py-4">
+              <Loader2 className="h-4.5 w-4.5 animate-spin text-[#3B42C4]" />
               <span>Fetching logs...</span>
             </div>
           ) : (
@@ -319,7 +319,7 @@ export default function DashboardClient() {
                 <button
                   key={report.id}
                   onClick={() => router.push(`/report/${report.id}`)}
-                  className="text-left p-3 rounded-lg bg-secondary hover:bg-white border border-border transition-all text-xs group cursor-pointer shadow-sm"
+                  className="text-left p-3 rounded-md bg-white hover:bg-[#F9FAFC] border border-[#E6E9EF] text-[#030522] transition-all text-xs group cursor-pointer shadow-sm"
                 >
                   <span className="text-foreground font-bold block truncate group-hover:text-primary transition-colors">
                     {report.title}
@@ -330,7 +330,7 @@ export default function DashboardClient() {
                 </button>
               ))}
               {historyList.length === 0 && (
-                <span className="text-xs text-muted-foreground py-4 italic">No reports generated yet.</span>
+                <span className="text-xs text-[#6F7C95] py-4 italic">No reports generated yet.</span>
               )}
             </div>
           )}
@@ -339,7 +339,7 @@ export default function DashboardClient() {
         {/* Sign out */}
         <button
           onClick={() => logout()}
-          className="flex items-center justify-center gap-2 py-2 text-xs font-bold text-muted-foreground hover:text-foreground bg-secondary hover:bg-white border border-border rounded-lg transition-all cursor-pointer shadow-sm"
+          className="flex items-center justify-center gap-2 py-2 text-xs font-bold border border-[#E6E9EF] text-[#030522] hover:bg-[#F9FAFC] rounded-md transition-all cursor-pointer shadow-sm w-full"
         >
           <LogOut className="h-3.5 w-3.5" />
           Sign Out
@@ -349,10 +349,10 @@ export default function DashboardClient() {
       {/* 2. MAIN WORKSPACE AREA (Right 3/4) */}
       <main className="flex-grow p-8 max-w-5xl mx-auto flex flex-col gap-6 overflow-y-auto">
         <header>
-          <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
+          <h1 className="text-3xl font-extrabold text-[#030522] tracking-tight">
             Compile Status Report
           </h1>
-          <p className="text-slate-500 text-xs mt-1 font-medium">Upload CSV datasets, add highlights, and compile dynamic reports</p>
+          <p className="text-[#6F7C95] text-xs mt-1 font-medium">Upload CSV datasets, add highlights, and compile dynamic reports</p>
         </header>
 
         {errorMessage && (
@@ -364,9 +364,9 @@ export default function DashboardClient() {
 
         <div className="flex flex-col gap-6">
           {/* Section 1: Title */}
-          <div className="corporate-card bg-white rounded-xl p-6 border border-slate-200">
+          <div className="bg-white border border-[#E6E9EF] rounded-lg shadow-sm p-6">
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-bold text-slate-650 uppercase tracking-wider">Report Title</label>
+              <label className="text-xs font-bold text-[#6F7C95] uppercase tracking-wider">Report Title</label>
               <input 
                 type="text" 
                 value={reportTitle}
@@ -379,9 +379,9 @@ export default function DashboardClient() {
           </div>
 
           {/* Section 2: CSV Upload Stage */}
-          <div className="corporate-card bg-white rounded-xl p-6 border border-slate-200">
-            <h2 className="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-blue-900"></span>
+          <div className="bg-white border border-[#E6E9EF] rounded-lg shadow-sm p-6">
+            <h2 className="text-base font-bold text-[#030522] mb-4 flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#3B42C4]"></span>
               Staging Datasets (CSV)
             </h2>
             
@@ -389,32 +389,32 @@ export default function DashboardClient() {
               
               {/* Zone 1: Features (Mandatory) */}
               <div className="flex flex-col gap-1.5">
-                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
-                  Features / Capabilities <span className="text-blue-900 font-bold">*Mandatory</span>
+                <span className="text-[10px] font-bold text-[#6F7C95] uppercase tracking-wider flex items-center gap-1">
+                  Features / Capabilities <span className="text-[#3B42C4] font-bold">*Mandatory</span>
                 </span>
                 {renderUploadZone('features', 'features')}
               </div>
 
               {/* Zone 2: Tasks (Mandatory) */}
               <div className="flex flex-col gap-1.5">
-                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
-                  Tasks / Items <span className="text-blue-900 font-bold">*Mandatory</span>
+                <span className="text-[10px] font-bold text-[#6F7C95] uppercase tracking-wider flex items-center gap-1">
+                  Tasks / Items <span className="text-[#3B42C4] font-bold">*Mandatory</span>
                 </span>
                 {renderUploadZone('tasks', 'tasks')}
               </div>
 
               {/* Zone 3: Risks (Optional) */}
               <div className="flex flex-col gap-1.5">
-                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
-                  Risks Log <span className="text-slate-400 font-medium">(Optional)</span>
+                <span className="text-[10px] font-bold text-[#6F7C95] uppercase tracking-wider flex items-center gap-1">
+                  Risks Log <span className="text-[#6F7C95] font-medium">(Optional)</span>
                 </span>
                 {renderUploadZone('risks', 'risks')}
               </div>
 
               {/* Zone 4: Issues (Optional) */}
               <div className="flex flex-col gap-1.5">
-                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
-                  Issues Log <span className="text-slate-400 font-medium">(Optional)</span>
+                <span className="text-[10px] font-bold text-[#6F7C95] uppercase tracking-wider flex items-center gap-1">
+                  Issues Log <span className="text-[#6F7C95] font-medium">(Optional)</span>
                 </span>
                 {renderUploadZone('issues', 'issues')}
               </div>
@@ -423,19 +423,19 @@ export default function DashboardClient() {
           </div>
 
           {/* Section 3: Manual Highlights */}
-          <div className="corporate-card bg-white rounded-xl p-6 border border-slate-200">
+          <div className="bg-white border border-[#E6E9EF] rounded-lg shadow-sm p-6">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-blue-900"></span>
+              <h2 className="text-base font-bold text-[#030522] flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#3B42C4]"></span>
                 Major Highlights / Achievements
               </h2>
-              <span className="text-[10px] text-slate-500 font-medium">Add between 1 and 5 bullets</span>
+              <span className="text-[10px] text-[#6F7C95] font-medium">Add between 1 and 5 bullets</span>
             </div>
 
             <div className="flex flex-col gap-3">
               {highlights.map((bullet, index) => (
                 <div key={index} className="flex gap-2 items-center">
-                  <span className="text-xs text-blue-900 font-bold w-5 text-right shrink-0">{index + 1}.</span>
+                  <span className="text-xs text-[#3B42C4] font-bold w-5 text-right shrink-0">{index + 1}.</span>
                   <input 
                     type="text" 
                     value={bullet}
@@ -459,7 +459,7 @@ export default function DashboardClient() {
                 type="button"
                 onClick={addHighlight}
                 disabled={highlights.length >= 5 || isSubmitting}
-                className="mt-2 self-start flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-blue-900 hover:text-white bg-blue-50 hover:bg-blue-900 border border-blue-200 hover:border-blue-900 rounded-lg transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                className="mt-2 self-start flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold border border-[#E6E9EF] text-[#030522] hover:bg-[#F9FAFC] rounded-md transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <Plus className="h-3.5 w-3.5" />
                 Add Highlight Point
@@ -471,7 +471,7 @@ export default function DashboardClient() {
           <button
             onClick={handleGenerate}
             disabled={!files.features || !files.tasks || !reportTitle.trim() || isSubmitting}
-            className="w-full py-3 bg-blue-900 hover:bg-blue-800 disabled:bg-blue-900/60 text-white text-base font-bold rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed"
+            className="w-full py-3 bg-[#3B42C4] hover:bg-[#3137A3] disabled:bg-[#3B42C4]/60 text-white text-base font-medium rounded-md transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed"
           >
             {isSubmitting ? (
               <>
@@ -494,18 +494,18 @@ export default function DashboardClient() {
     
     if (file) {
       return (
-        <div className="flex items-center justify-between p-3.5 rounded-lg border border-blue-200 bg-blue-50/30 transition-all">
+        <div className="flex items-center justify-between p-3.5 rounded-md border border-[#E6E9EF] bg-[#F9FAFC] transition-all">
           <div className="flex items-center gap-2.5 overflow-hidden">
-            <FileCheck className="h-5 w-5 text-blue-900 shrink-0" />
+            <FileCheck className="h-5 w-5 text-[#3B42C4] shrink-0" />
             <div className="overflow-hidden">
-              <span className="text-xs font-bold text-slate-800 block truncate">{file.name}</span>
-              <span className="text-[10px] text-slate-500">{(file.size / 1024).toFixed(1)} KB</span>
+              <span className="text-xs font-bold text-[#030522] block truncate">{file.name}</span>
+              <span className="text-[10px] text-[#6F7C95]">{(file.size / 1024).toFixed(1)} KB</span>
             </div>
           </div>
           <button
             onClick={() => removeFile(zone)}
             disabled={isSubmitting}
-            className="p-1.5 text-slate-500 hover:text-red-700 hover:bg-slate-100 border border-transparent hover:border-slate-200 rounded-lg transition-all cursor-pointer disabled:opacity-40"
+            className="p-1.5 text-[#6F7C95] hover:text-red-700 hover:bg-slate-105 border border-transparent hover:border-slate-200 rounded-md transition-all cursor-pointer disabled:opacity-40"
             title="Remove File"
           >
             <Trash2 className="h-4.5 w-4.5" />
@@ -521,13 +521,13 @@ export default function DashboardClient() {
         onDrop={(e) => handleDrop(e, zone)}
         className={`border-2 border-dashed rounded-lg p-5 text-center flex flex-col items-center justify-center gap-1.5 transition-all ${
           active 
-            ? 'border-blue-900 bg-blue-50' 
-            : 'border-slate-300 bg-slate-50/50 hover:border-slate-400 hover:bg-slate-50'
+            ? 'border-[#3B42C4] bg-[#F9FAFC]' 
+            : 'border-[#E6E9EF] bg-[#F9FAFC]/30 hover:border-[#3B42C4] hover:bg-[#F9FAFC]'
         }`}
       >
-        <FileUp className={`h-6 w-6 ${active ? 'text-blue-900 animate-bounce' : 'text-slate-450'}`} />
+        <FileUp className={`h-6 w-6 ${active ? 'text-[#3B42C4] animate-bounce' : 'text-[#6F7C95]'}`} />
         <div>
-          <label className="text-xs font-bold text-slate-700 hover:text-blue-900 cursor-pointer transition-colors block">
+          <label className="text-xs font-bold text-[#030522] hover:text-[#3B42C4] cursor-pointer transition-colors block">
             Click to upload 
             <input 
               type="file" 
@@ -537,7 +537,7 @@ export default function DashboardClient() {
               disabled={isSubmitting}
             />
           </label>
-          <span className="text-[10px] text-slate-500 mt-1 block">or drag and drop CSV file here</span>
+          <span className="text-[10px] text-[#6F7C95] mt-1 block">or drag and drop CSV file here</span>
         </div>
       </div>
     );
