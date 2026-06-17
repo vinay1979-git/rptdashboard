@@ -198,7 +198,7 @@ export default function ReportClient() {
         router.refresh();
         router.push('/dashboard');
       }, 2000);
-    } catch (err: any) {
+    } catch (err) {
       console.error("Deletion failed:", err);
       setShowDeleteModal(false);
     }
