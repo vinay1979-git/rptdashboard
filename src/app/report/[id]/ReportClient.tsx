@@ -164,6 +164,30 @@ export default function ReportClient() {
     }
   };
 
+  const handleDeleteReport = async () => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this report? All associated data will be permanently removed."
+    );
+    if (!confirmed) return;
+
+    try {
+      setLoading(true);
+      const { error } = await supabase
+        .from('reports')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      alert("Report deleted successfully.");
+      router.push('/dashboard');
+    } catch (err: any) {
+      console.error("Deletion failed:", err);
+      alert(`Deletion failed: ${err.message || err}`);
+      setLoading(false);
+    }
+  };
+
   const CHART_COLORS = ['#1e3a8a', '#2563eb', '#0284c7', '#0d9488', '#059669', '#4f46e5'];
 
   return (
@@ -535,6 +559,16 @@ export default function ReportClient() {
 
         </div>
       )}
+
+      {/* Destructive Deletion Section */}
+      <div className="border-t border-slate-200 pt-6 flex justify-end">
+        <button
+          onClick={handleDeleteReport}
+          className="px-4 py-2 border border-red-200 hover:border-red-650 text-red-600 hover:bg-red-50 text-xs font-bold rounded-lg transition-all cursor-pointer shadow-sm flex items-center gap-1.5"
+        >
+          Delete Historic Report
+        </button>
+      </div>
 
       {/* 4. MODAL DRAWER: Nested Tasks List (Active on double-clicking feature) */}
       {selectedFeature && (
