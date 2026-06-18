@@ -27,7 +27,7 @@ import {
 import { createClient } from '@/utils/supabase/client';
 import { generateGmailReportHtml } from '../../utils/emailTemplate';
 import { processReport, MappedFeature } from '../../utils/reportEngine';
-import { Report } from '@/app/actions/reportActions';
+import { Report, deleteReportAction } from '@/app/actions/reportActions';
 
 export default function ReportClient() {
   const params = useParams();
@@ -171,24 +171,8 @@ export default function ReportClient() {
 
   const confirmDeleteReport = async () => {
     try {
-      // 1. Manually clear child records first to avoid FK constraint blocks
-      const { error: issuesErr } = await supabase
-        .from('issues')
-        .delete()
-        .eq('report_id', id);
-      if (issuesErr && issuesErr.code !== 'PGRST205') throw issuesErr;
-
-      const { error: risksErr } = await supabase
-        .from('risks')
-        .delete()
-        .eq('report_id', id);
-      if (risksErr && risksErr.code !== 'PGRST205') throw risksErr;
-
-      const { error: reportsErr } = await supabase
-        .from('reports')
-        .delete()
-        .eq('id', id);
-      if (reportsErr) throw reportsErr;
+      const result = await deleteReportAction(id);
+      if (result.error) throw new Error(result.error);
 
       // 2. Upon successful deletion
       setShowDeleteModal(false);

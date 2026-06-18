@@ -1,6 +1,7 @@
 'use server';
 
 import { createClient } from '@/utils/supabase/server';
+import { createAdminClient } from '@/utils/supabase/admin';
 import { revalidatePath } from 'next/cache';
 import { FeatureData, TaskData, RiskIssueData } from '@/app/utils/reportEngine';
 
@@ -98,4 +99,58 @@ export async function saveReport(
 
   revalidatePath('/dashboard');
   return { id: newReport.id };
+}
+
+export async function deleteReportAction(reportId: string) {
+  const supabase = await createClient();
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+  if (authError || !user) {
+    return { error: 'Unauthorized. User session not found. Please log in.' };
+  }
+
+  // 1. Fetch report details using admin client to find the owner
+  const adminClient = createAdminClient();
+  const { data: report, error: fetchError } = await adminClient
+    .from('reports')
+    .select('created_by')
+    .eq('id', reportId)
+    .single();
+
+  if (fetchError || !report) {
+    return { error: 'Report not found.' };
+  }
+
+  // 2. Check authorization: user is owner or an admin
+  let canDelete = report.created_by === user.id;
+
+  if (!canDelete) {
+    const { data: profile } = await adminClient
+      .from('profiles')
+      .select('is_admin')
+      .eq('id', user.id)
+      .single();
+
+    if (profile && profile.is_admin) {
+      canDelete = true;
+    }
+  }
+
+  if (!canDelete) {
+    return { error: 'Permission denied. Only the report creator or an admin can delete it.' };
+  }
+
+  // 3. Delete the report using adminClient
+  const { error: deleteError } = await adminClient
+    .from('reports')
+    .delete()
+    .eq('id', reportId);
+
+  if (deleteError) {
+    console.error('Error deleting report:', deleteError.message);
+    return { error: deleteError.message };
+  }
+
+  revalidatePath('/dashboard');
+  return { success: true };
 }
