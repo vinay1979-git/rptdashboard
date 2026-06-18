@@ -176,13 +176,13 @@ export default function ReportClient() {
         .from('issues')
         .delete()
         .eq('report_id', id);
-      if (issuesErr) throw issuesErr;
+      if (issuesErr && issuesErr.code !== 'PGRST205') throw issuesErr;
 
       const { error: risksErr } = await supabase
         .from('risks')
         .delete()
         .eq('report_id', id);
-      if (risksErr) throw risksErr;
+      if (risksErr && risksErr.code !== 'PGRST205') throw risksErr;
 
       const { error: reportsErr } = await supabase
         .from('reports')

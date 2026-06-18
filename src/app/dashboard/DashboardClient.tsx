@@ -21,6 +21,8 @@ import { logout } from '../login/actions';
 import { fetchReports, saveReport, HistoricalReportSummary } from '../actions/reportActions';
 import { FeatureData, TaskData, RiskIssueData } from '../utils/reportEngine';
 
+const REPORT_TYPES = ['Product Grow report'];
+
 export default function DashboardClient() {
   const router = useRouter();
   const supabase = createClient();
@@ -30,6 +32,13 @@ export default function DashboardClient() {
   const [userEmail, setUserEmail] = useState('');
   const [historyList, setHistoryList] = useState<HistoricalReportSummary[]>([]);
   const [loadingHistory, setLoadingHistory] = useState(true);
+
+  // Report Type State
+  const [selectedReportType, setSelectedReportType] = useState('Product Grow report');
+
+  const filteredHistoryList = historyList.filter(
+    report => report.report_type === selectedReportType
+  );
 
   // Form inputs
   const [reportTitle, setReportTitle] = useState('Executive Weekly Status Update');
@@ -302,7 +311,7 @@ export default function DashboardClient() {
         </div>
 
         {/* Historical report logs */}
-        <div className="flex-grow flex flex-col gap-2 min-h-0">
+        <div className="flex-grow flex flex-col gap-2 min-h-0" data-report-type={selectedReportType}>
           <h4 className="text-[10px] uppercase tracking-wider font-bold text-[#6F7C95] flex items-center gap-1.5 mb-1">
             <History className="h-3 w-3" />
             Historical Reports
@@ -315,22 +324,22 @@ export default function DashboardClient() {
             </div>
           ) : (
             <div className="overflow-y-auto flex flex-col gap-1.5 pr-1 flex-grow">
-              {historyList.map(report => (
+              {filteredHistoryList.map(report => (
                 <button
                   key={report.id}
                   onClick={() => router.push(`/report/${report.id}`)}
                   className="text-left p-3 rounded-md bg-white hover:bg-[#F9FAFC] border border-[#E6E9EF] text-[#030522] transition-all text-xs group cursor-pointer shadow-sm"
                 >
-                  <span className="text-foreground font-bold block truncate group-hover:text-primary transition-colors">
+                  <span className="text-[#030522] font-bold block truncate group-hover:text-[#3B42C4] transition-colors">
                     {report.title}
                   </span>
-                  <span className="text-[10px] text-muted-foreground mt-1 block">
+                  <span className="text-[10px] text-[#6F7C95] mt-1 block">
                     {new Date(report.created_at).toLocaleDateString()}
                   </span>
                 </button>
               ))}
-              {historyList.length === 0 && (
-                <span className="text-xs text-[#6F7C95] py-4 italic">No reports generated yet.</span>
+              {filteredHistoryList.length === 0 && (
+                <span className="text-xs text-[#6F7C95] py-4 italic">No {selectedReportType} reports generated yet.</span>
               )}
             </div>
           )}
@@ -355,6 +364,30 @@ export default function DashboardClient() {
           <p className="text-[#6F7C95] text-xs mt-1 font-medium">Upload CSV datasets, add highlights, and compile dynamic reports</p>
         </header>
 
+        {/* Select Report Type Section */}
+        <div className="bg-white border border-[#E6E9EF] rounded-lg shadow-sm p-5 flex flex-col gap-3">
+          <label className="text-[10px] font-bold text-[#6F7C95] uppercase tracking-wider">Select Report Type</label>
+          <div className="flex gap-2">
+            {REPORT_TYPES.map((type) => {
+              const isActive = selectedReportType === type;
+              return (
+                <button
+                  key={type}
+                  type="button"
+                  onClick={() => setSelectedReportType(type)}
+                  className={`px-4 py-2 text-xs font-bold border transition-all cursor-pointer rounded-md ${
+                    isActive
+                      ? 'border-[#3B42C4] text-[#3B42C4] bg-white shadow-sm'
+                      : 'border-[#E6E9EF] text-[#6F7C95] hover:bg-[#F9FAFC]'
+                  }`}
+                >
+                  {type}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
         {errorMessage && (
           <div className="bg-red-50 border border-red-100 text-red-700 text-xs px-4 py-3.5 rounded-lg flex items-start gap-2.5">
             <AlertCircle className="h-4.5 w-4.5 shrink-0 mt-0.5" />
@@ -362,7 +395,7 @@ export default function DashboardClient() {
           </div>
         )}
 
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6" data-report-type={selectedReportType}>
           {/* Section 1: Title */}
           <div className="bg-white border border-[#E6E9EF] rounded-lg shadow-sm p-6">
             <div className="flex flex-col gap-1.5">
@@ -476,10 +509,10 @@ export default function DashboardClient() {
             {isSubmitting ? (
               <>
                 <Loader2 className="h-5 w-5 animate-spin" />
-                Analyzing & Compiling Status Report...
+                Analyzing & Compiling {selectedReportType}...
               </>
             ) : (
-              'Generate & Save Report'
+              `Create New ${selectedReportType}`
             )}
           </button>
         </div>
