@@ -35,11 +35,6 @@ export default function DashboardClient() {
 
   // Report Type State
   const [selectedReportType, setSelectedReportType] = useState('Product Grow report');
-
-  const filteredHistoryList = historyList.filter(
-    report => report.report_type === selectedReportType
-  );
-
   // Form inputs
   const [reportTitle, setReportTitle] = useState('Executive Weekly Status Update');
   const [highlights, setHighlights] = useState<string[]>(['']);
@@ -64,7 +59,7 @@ export default function DashboardClient() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // 1. Initial Load: Check Auth and Fetch History
+  // 1. Initial Load: Check Auth and Admin Status
   useEffect(() => {
     const initDashboard = async () => {
       const { data: { user }, error: authErr } = await supabase.auth.getUser();
@@ -84,15 +79,22 @@ export default function DashboardClient() {
       if (profile && profile.is_admin) {
         setIsAdmin(true);
       }
+    };
 
-      // Load last 10 reports
-      const reports = await fetchReports();
+    initDashboard();
+  }, [router, supabase]);
+
+  // 2. Fetch Historical Reports whenever selectedReportType changes
+  useEffect(() => {
+    const loadHistory = async () => {
+      setLoadingHistory(true);
+      const reports = await fetchReports(selectedReportType);
       setHistoryList(reports);
       setLoadingHistory(false);
     };
 
-    initDashboard();
-  }, [router]);
+    loadHistory();
+  }, [selectedReportType]);
 
   // 2. Drag & Drop Handlers
   const handleDrag = (e: React.DragEvent, zone: string, active: boolean) => {
@@ -263,7 +265,8 @@ export default function DashboardClient() {
         cleanFeatures,
         cleanTasks,
         cleanRisks,
-        cleanIssues
+        cleanIssues,
+        selectedReportType
       );
 
       if (result.error) {
@@ -324,7 +327,7 @@ export default function DashboardClient() {
             </div>
           ) : (
             <div className="overflow-y-auto flex flex-col gap-1.5 pr-1 flex-grow">
-              {filteredHistoryList.map(report => (
+              {historyList.map(report => (
                 <button
                   key={report.id}
                   onClick={() => router.push(`/report/${report.id}`)}
@@ -338,7 +341,7 @@ export default function DashboardClient() {
                   </span>
                 </button>
               ))}
-              {filteredHistoryList.length === 0 && (
+              {historyList.length === 0 && (
                 <span className="text-xs text-[#6F7C95] py-4 italic">No {selectedReportType} reports generated yet.</span>
               )}
             </div>

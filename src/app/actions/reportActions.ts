@@ -26,11 +26,19 @@ export interface HistoricalReportSummary {
   report_type: string;
 }
 
-export async function fetchReports() {
+export async function fetchReports(selectedReportType: string = 'Product Grow report') {
   const supabase = await createClient();
-  const { data, error } = await supabase
+  let query = supabase
     .from('reports')
-    .select('id, features_data, created_at, report_type')
+    .select('id, features_data, created_at, report_type');
+
+  if (selectedReportType === 'Product Grow report') {
+    query = query.or(`report_type.eq."${selectedReportType}",report_type.is.null`);
+  } else {
+    query = query.eq('report_type', selectedReportType);
+  }
+
+  const { data, error } = await query
     .order('created_at', { ascending: false })
     .limit(10);
 
@@ -56,7 +64,8 @@ export async function saveReport(
   featuresData: FeatureData[],
   tasksData: TaskData[],
   risksData: RiskIssueData[],
-  issuesData: RiskIssueData[]
+  issuesData: RiskIssueData[],
+  reportType: string
 ) {
   const supabase = await createClient();
   const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -77,7 +86,7 @@ export async function saveReport(
       tasks_data: tasksData,
       risks_data: risksData,
       issues_data: issuesData,
-      report_type: 'Product Grow report'
+      report_type: reportType
     })
     .select('id')
     .single();
