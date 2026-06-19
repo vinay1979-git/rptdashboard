@@ -1,6 +1,7 @@
 export interface FeatureData {
   'Part id': string;
   devRevId?: string;
+  partId?: string;
   Name: string;
   'Owner[0]': string;
   'Theme[0]': string;

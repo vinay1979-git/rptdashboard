@@ -197,6 +197,7 @@ export default function DashboardClient() {
       return {
         'Part id': partId,
         devRevId: partId,
+        partId: partId,
         Name: String(row['Name'] || row['name'] || '').slice(0, 50).trim(),
         'Owner[0]': String(row['Owner[0]'] || row['owner'] || '').trim(),
         'Theme[0]': String(row['Theme[0]'] || row['theme'] || '').trim(),

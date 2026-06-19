@@ -155,7 +155,7 @@ export default function ReportClient() {
   });
 
   // Generate Email HTML
-  const emailHtml = generateGmailReportHtml(id, reportTitle, formattedDate, payload);
+  const emailHtml = generateGmailReportHtml(id, reportTitle, formattedDate, payload, report);
 
   // Copy Rich text for Gmail/Outlook
   const handleCopyRich = async () => {
