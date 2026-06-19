@@ -18,12 +18,14 @@ export interface FeatureData {
 
 export interface TaskData {
   Items: string;
+  items?: string;
   Title: string;
   Stage: string;
   'Owner[0]': string;
   'Target Close Date': string;
   'Close date': string;
   'Part-ID': string;
+  partId?: string;
 }
 
 export interface RiskIssueData {

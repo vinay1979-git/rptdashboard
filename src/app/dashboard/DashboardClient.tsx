@@ -215,15 +215,21 @@ export default function DashboardClient() {
   };
 
   const sanitizeTasks = (raw: Record<string, string>[]): TaskData[] => {
-    return raw.map(row => ({
-      Items: String(row['Items'] || row['items'] || '').trim(),
-      Title: String(row['Title'] || row['title'] || '').slice(0, 50).trim(),
-      Stage: String(row['Stage'] || row['stage'] || '').trim(),
-      'Owner[0]': String(row['Owner[0]'] || row['owner'] || '').trim(),
-      'Target Close Date': String(row['Target Close Date'] || row['target_close_date'] || '').trim(),
-      'Close date': String(row['Close date'] || row['close_date'] || '').trim(),
-      'Part-ID': String(row['Part-ID'] || row['part_id'] || row['Part id'] || '').trim(),
-    }));
+    return raw.map(row => {
+      const itemsVal = String(row['Items'] || row['items'] || '').trim();
+      const partIdVal = String(row['Part-ID'] || row['part_id'] || row['Part id'] || '').trim();
+      return {
+        Items: itemsVal,
+        items: itemsVal,
+        Title: String(row['Title'] || row['title'] || '').slice(0, 50).trim(),
+        Stage: String(row['Stage'] || row['stage'] || '').trim(),
+        'Owner[0]': String(row['Owner[0]'] || row['owner'] || '').trim(),
+        'Target Close Date': String(row['Target Close Date'] || row['target_close_date'] || '').trim(),
+        'Close date': String(row['Close date'] || row['close_date'] || '').trim(),
+        'Part-ID': partIdVal,
+        partId: partIdVal,
+      };
+    });
   };
 
   const sanitizeRisksIssues = (raw: Record<string, string>[]): RiskIssueData[] => {

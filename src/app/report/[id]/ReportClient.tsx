@@ -779,6 +779,7 @@ export default function ReportClient() {
                     <thead>
                       <tr className="border-b border-[#E6E9EF]">
                         <th className="py-2.5 px-4 bg-[#F9FAFC] text-[#6F7C95] text-sm font-medium uppercase tracking-wider">ID</th>
+                        <th className="py-2.5 px-4 bg-[#F9FAFC] text-[#6F7C95] text-sm font-medium uppercase tracking-wider">Part ID</th>
                         <th className="py-2.5 px-4 bg-[#F9FAFC] text-[#6F7C95] text-sm font-medium uppercase tracking-wider">Task Title</th>
                         <th className="py-2.5 px-4 bg-[#F9FAFC] text-[#6F7C95] text-sm font-medium uppercase tracking-wider">Owner</th>
                         <th className="py-2.5 px-4 bg-[#F9FAFC] text-[#6F7C95] text-sm font-medium uppercase tracking-wider">Target Date</th>
@@ -792,7 +793,34 @@ export default function ReportClient() {
 
                         return (
                           <tr key={task.Items} className="border-b border-[#E6E9EF] hover:bg-[#F9FAFC] transition-colors">
-                            <td className="py-3 px-4 font-mono text-[#6F7C95]">{task.Items}</td>
+                            <td className="py-3 px-4 font-mono text-[#6F7C95]">
+                              {(task.items || task.Items) ? (
+                                <a
+                                  href={`https://app.devrev.ai/lentra/works/${task.items || task.Items}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-[#3B42C4] hover:underline font-medium"
+                                >
+                                  {task.items || task.Items}
+                                </a>
+                              ) : (
+                                '-'
+                              )}
+                            </td>
+                            <td className="py-3 px-4 font-mono text-[#6F7C95]">
+                              {(task.partId || task['Part-ID']) ? (
+                                <a
+                                  href={`https://app.devrev.ai/lentra/parts/${task.partId || task['Part-ID']}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-[#3B42C4] hover:underline font-medium"
+                                >
+                                  {task.partId || task['Part-ID']}
+                                </a>
+                              ) : (
+                                '-'
+                              )}
+                            </td>
                             <td className="py-3 px-4 font-bold text-[#030522]">{task.Title}</td>
                             <td className="py-3 px-4 text-[#6F7C95] font-medium">{task['Owner[0]']}</td>
                             <td className="py-3 px-4 text-[#6F7C95]">{task['Target Close Date'] || 'N/A'}</td>
