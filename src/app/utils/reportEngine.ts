@@ -38,6 +38,7 @@ export interface RiskIssueData {
   Status: string;
   'Status Date': string;
   Comments: string;
+  reportedBy: string;
 }
 
 export interface MappedFeature extends FeatureData {

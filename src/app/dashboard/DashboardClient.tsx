@@ -241,6 +241,7 @@ export default function DashboardClient() {
         Status: String(row['Status'] || row['status'] || '').trim(),
         'Status Date': String(row['Status Date'] || row['status_date'] || '').trim(),
         Comments: String(row['Comments'] || row['comments'] || '').trim(),
+        reportedBy: String(row['Reported by'] || row['Reported By'] || row['reported by'] || '').trim() || 'Unassigned',
       };
     });
   };
