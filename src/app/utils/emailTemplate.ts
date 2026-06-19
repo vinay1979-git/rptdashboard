@@ -53,6 +53,12 @@ export function generateGmailReportHtml(
   const risksList: RiskIssueData[] = (report?.risks_data || []).slice(0, 3);
   const issuesList: RiskIssueData[] = (report?.issues_data || []).slice(0, 3);
 
+  // Filter and count active risks (status is NOT 'Closed', 'Resolved', 'Completed', or 'Mitigated')
+  const activeRisksCount = (report?.risks_data || []).filter((risk: any) => {
+    const statusVal = risk.Status || risk.status || 'open';
+    return !['closed', 'resolved', 'completed', 'mitigated'].includes(statusVal.toLowerCase());
+  }).length;
+
   // Extract report_type
   const report_type = report?.report_type || 'Product Grow report';
 
@@ -114,8 +120,8 @@ export function generateGmailReportHtml(
             </td>
             <td width="5%"></td>
             <td width="30%" valign="top" style="background-color: #F9FAFC; border: 1px solid #E6E9EF; border-radius: 6px; padding: 16px; text-align: center; font-family: Arial, sans-serif;">
-              <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #6F7C95; font-weight: bold;">Total Risks</div>
-              <div style="font-size: 24px; font-weight: bold; margin-top: 6px; color: #ef4444;">${report?.risks_data?.length || 0}</div>
+              <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #6F7C95; font-weight: bold;">Active Risks</div>
+              <div style="font-size: 24px; font-weight: bold; margin-top: 6px; color: #ef4444;">${activeRisksCount}</div>
             </td>
             <td width="5%"></td>
             <td width="30%" valign="top" style="background-color: #F9FAFC; border: 1px solid #E6E9EF; border-radius: 6px; padding: 16px; text-align: center; font-family: Arial, sans-serif;">
