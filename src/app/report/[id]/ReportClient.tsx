@@ -470,9 +470,9 @@ export default function ReportClient() {
                     <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-sm font-medium uppercase tracking-wider">DevRev ID</th>
                     <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-sm font-medium uppercase tracking-wider">Feature Name</th>
                     <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-sm font-medium uppercase tracking-wider">Owner</th>
-                    <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-sm font-medium uppercase tracking-wider">Goal Outcome</th>
-                    <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-sm font-medium uppercase tracking-wider">Sprint</th>
-                    <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-sm font-medium uppercase tracking-wider text-right">Status</th>
+                    <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-sm font-medium uppercase tracking-wider">RAG Status</th>
+                    <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-sm font-medium uppercase tracking-wider">Percentage Complete</th>
+                    <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-sm font-medium uppercase tracking-wider">Reason</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -485,18 +485,23 @@ export default function ReportClient() {
                       <td className="py-3.5 px-4 font-mono text-[#6F7C95] group-hover:text-[#3B42C4] transition-colors">{f.devRevId || f['Part id']}</td>
                       <td className="py-3.5 px-4 font-bold text-[#030522] group-hover:text-[#3B42C4] transition-colors">{f.Name}</td>
                       <td className="py-3.5 px-4 text-[#6F7C95] font-medium">{f['Owner[0]']}</td>
-                      <td className="py-3.5 px-4 text-[#6F7C95] font-medium">{f['Goal[0]'] || 'N/A'}</td>
-                      <td className="py-3.5 px-4 text-[#6F7C95] font-medium">{f['Tags[0]'] || 'N/A'}</td>
-                      <td className="py-3.5 px-4 text-right">
-                        {f.status === 'Completed' && (
-                          <span className="inline-flex items-center text-[10px] font-bold text-green-700 bg-green-50 px-2 py-0.5 rounded-full border border-green-200">Completed</span>
+                      <td className="py-3.5 px-4">
+                        {f.ragStatus ? (
+                          <span className={`inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                            f.ragStatus.toLowerCase() === 'red' || f.ragStatus.toLowerCase() === 'r' ? 'text-red-700 bg-red-50 border-red-200' :
+                            f.ragStatus.toLowerCase() === 'amber' || f.ragStatus.toLowerCase() === 'a' ? 'text-amber-700 bg-amber-50 border-amber-200' :
+                            f.ragStatus.toLowerCase() === 'green' || f.ragStatus.toLowerCase() === 'g' ? 'text-green-700 bg-green-50 border-green-200' :
+                            'text-slate-700 bg-slate-50 border-slate-200'
+                          }`}>
+                            {f.ragStatus}
+                          </span>
+                        ) : (
+                          <span className="text-slate-400 italic">N/A</span>
                         )}
-                        {f.status === 'In Progress' && (
-                          <span className="inline-flex items-center text-[10px] font-bold text-blue-800 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">In Progress</span>
-                        )}
-                        {f.status === 'Not Picked Up' && (
-                          <span className="inline-flex items-center text-[10px] font-bold text-[#6F7C95] bg-[#F9FAFC] px-2 py-0.5 rounded-full border border-[#E6E9EF]">Not Started</span>
-                        )}
+                      </td>
+                      <td className="py-3.5 px-4 text-[#6F7C95] font-medium">{f.percentageComplete !== undefined ? `${f.percentageComplete}%` : '0%'}</td>
+                      <td className="py-3.5 px-4 text-[#6F7C95] font-medium max-w-[200px] truncate" title={f.reason}>
+                        {f.reason ? (f.reason.length > 30 ? f.reason.slice(0, 30) + '...' : f.reason) : 'N/A'}
                       </td>
                     </tr>
                   ))}
