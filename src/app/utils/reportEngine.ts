@@ -167,12 +167,16 @@ export function processReport(
   const inProgressFeatures = mappedFeatures.filter(f => f.status === 'In Progress').length;
   const notPickedUpFeatures = mappedFeatures.filter(f => f.status === 'Not Picked Up').length;
 
+  const average = totalFeatures > 0
+    ? mappedFeatures.reduce((acc, f) => acc + (f.percentageComplete || 0), 0) / totalFeatures
+    : 0;
+
   const stats = {
     totalFeatures,
     completedFeatures,
     inProgressFeatures,
     notPickedUpFeatures,
-    completionPercentage: totalFeatures > 0 ? Math.round((completedFeatures / totalFeatures) * 100) : 0
+    completionPercentage: Math.round(average)
   };
 
   return {

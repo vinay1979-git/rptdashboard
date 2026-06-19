@@ -112,12 +112,30 @@ export default function ReportClient() {
   if (!report) return null;
 
   const reportTitle = report.features_data?.title || 'Executive Status Report';
-  const features = Array.isArray(report.features_data) 
+  const rawFeatures = Array.isArray(report.features_data) 
     ? report.features_data 
     : (report.features_data?.features || []);
 
+  const getRagPriority = (status?: string) => {
+    if (!status) return 4;
+    const lower = status.toLowerCase();
+    if (lower.includes('red')) return 1;
+    if (lower.includes('amber')) return 2;
+    if (lower.includes('green')) return 3;
+    return 4;
+  };
+
+  const sortedFeatures = [...rawFeatures].sort((a, b) => {
+    const priorityA = getRagPriority(a.ragStatus);
+    const priorityB = getRagPriority(b.ragStatus);
+    if (priorityA !== priorityB) {
+      return priorityA - priorityB;
+    }
+    return (a.Name || '').localeCompare(b.Name || '');
+  });
+
   const payload = processReport(
-    features,
+    sortedFeatures,
     report.tasks_data || [],
     [
       ...(report.risks_data || []).map((r) => ({ ...r, type: r.type || 'Risk' })),
@@ -263,9 +281,9 @@ export default function ReportClient() {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {/* KPI 1 */}
             <div className="bg-white border border-[#E6E9EF] rounded-lg shadow-sm p-5 text-center">
-              <div className="text-[10px] uppercase font-bold text-[#6F7C95] tracking-wider">Features Completed</div>
+              <div className="text-[10px] uppercase font-bold text-[#6F7C95] tracking-wider">Sprint Progress</div>
               <div className="text-2xl md:text-3xl font-black text-green-600 mt-1">{payload.stats.completionPercentage}%</div>
-              <div className="text-xs text-[#6F7C95] mt-1 font-medium">{payload.stats.completedFeatures} of {payload.stats.totalFeatures} Features</div>
+              <div className="text-xs text-[#6F7C95] mt-1 font-medium">Average of {payload.stats.totalFeatures} Features</div>
             </div>
 
             {/* KPI 2 */}

@@ -154,9 +154,9 @@ export function generateGmailReportHtml(
           <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom: 24px; border-collapse: collapse;">
             <tr>
               <td width="48%" valign="top" style="background-color: #F9FAFC; border-radius: 6px; padding: 16px; border: 1px solid #E6E9EF; text-align: center;">
-                <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #6F7C95; font-weight: bold;">Completion Rate</div>
+                <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #6F7C95; font-weight: bold;">Sprint Progress</div>
                 <div style="font-size: 24px; font-weight: 800; margin: 4px 0; color: #030522;">${payload.stats.completionPercentage}%</div>
-                <div style="font-size: 10px; color: #10b981; font-weight: 600;">${payload.stats.completedFeatures} of ${payload.stats.totalFeatures} Features</div>
+                <div style="font-size: 10px; color: #6F7C95; font-weight: 600;">Average of ${payload.stats.totalFeatures} Features</div>
               </td>
               <td width="4%"></td>
               <td width="48%" valign="top" style="background-color: #F9FAFC; border-radius: 6px; padding: 16px; border: 1px solid #E6E9EF; text-align: center;">
