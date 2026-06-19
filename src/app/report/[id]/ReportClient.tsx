@@ -55,9 +55,9 @@ export default function ReportClient() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
-  // Risks / Issues panel expansion states
-  const [showAllRisks, setShowAllRisks] = useState(false);
-  const [showAllIssues, setShowAllIssues] = useState(false);
+  // Risks / Issues modal visibility states
+  const [showAllRisksModal, setShowAllRisksModal] = useState(false);
+  const [showAllIssuesModal, setShowAllIssuesModal] = useState(false);
 
   // Fetch Report Data from Supabase
   useEffect(() => {
@@ -424,7 +424,7 @@ export default function ReportClient() {
                       </tr>
                     </thead>
                     <tbody>
-                      {(showAllRisks ? (report.risks_data || []) : (report.risks_data || []).slice(0, 3)).map((r) => {
+                      {(report.risks_data || []).slice(0, 3).map((r) => {
                         const desc = r.Description || r.description || '';
                         const truncatedDesc = desc.length > 50 ? desc.substring(0, 50) + '...' : desc;
                         return (
@@ -451,12 +451,12 @@ export default function ReportClient() {
                     </tbody>
                   </table>
                 </div>
-                {report.risks_data && report.risks_data.length > 3 && (
+                {report.risks_data && report.risks_data.length > 0 && (
                   <button
-                    onClick={() => setShowAllRisks(!showAllRisks)}
+                    onClick={() => setShowAllRisksModal(true)}
                     className="border border-[#E6E9EF] text-[#3B42C4] hover:bg-[#F9FAFC] w-full mt-4 py-2 text-sm font-medium rounded-md transition-all cursor-pointer text-center"
                   >
-                    {showAllRisks ? 'Show Less Risks' : 'View All Risks'}
+                    View All Risks
                   </button>
                 )}
               </div>
@@ -477,7 +477,7 @@ export default function ReportClient() {
                       </tr>
                     </thead>
                     <tbody>
-                      {(showAllIssues ? (report.issues_data || []) : (report.issues_data || []).slice(0, 3)).map((i) => {
+                      {(report.issues_data || []).slice(0, 3).map((i) => {
                         const desc = i.Description || i.description || '';
                         const truncatedDesc = desc.length > 50 ? desc.substring(0, 50) + '...' : desc;
                         return (
@@ -504,12 +504,12 @@ export default function ReportClient() {
                     </tbody>
                   </table>
                 </div>
-                {report.issues_data && report.issues_data.length > 3 && (
+                {report.issues_data && report.issues_data.length > 0 && (
                   <button
-                    onClick={() => setShowAllIssues(!showAllIssues)}
+                    onClick={() => setShowAllIssuesModal(true)}
                     className="border border-[#E6E9EF] text-[#3B42C4] hover:bg-[#F9FAFC] w-full mt-4 py-2 text-sm font-medium rounded-md transition-all cursor-pointer text-center"
                   >
-                    {showAllIssues ? 'Show Less Issues' : 'View All Issues'}
+                    View All Issues
                   </button>
                 )}
               </div>
@@ -842,6 +842,172 @@ export default function ReportClient() {
             <p className="text-[#6F7C95] text-sm mt-2">
               The report and all associated data have been successfully removed.
             </p>
+          </div>
+        </div>
+      )}
+
+      {/* All Risks Modal */}
+      {showAllRisksModal && (
+        <div className="fixed inset-0 bg-[#030522]/20 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0" onClick={() => setShowAllRisksModal(false)}></div>
+          <div className="bg-white border border-[#E6E9EF] rounded-lg shadow-xl w-full max-w-4xl max-h-[80vh] flex flex-col relative z-10 animate-fade-in">
+            {/* Header */}
+            <div className="flex justify-between items-center border-b border-[#E6E9EF] p-6 shrink-0">
+              <h3 className="text-lg font-extrabold text-[#030522] tracking-tight">
+                All Risks ({report.risks_data?.length || 0})
+              </h3>
+              <button
+                onClick={() => setShowAllRisksModal(false)}
+                className="p-1.5 border border-[#E6E9EF] text-[#030522] hover:bg-[#F9FAFC] rounded-md transition-all cursor-pointer shadow-sm bg-white"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            
+            {/* Body */}
+            <div className="overflow-y-auto p-6 flex-grow">
+              {report.risks_data && report.risks_data.length > 0 ? (
+                <div className="overflow-x-auto border border-[#E6E9EF] rounded-lg">
+                  <table className="w-full text-left text-xs border-collapse">
+                    <thead>
+                      <tr className="border-b border-[#E6E9EF]">
+                        <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-xs font-bold uppercase tracking-wider border-r border-[#E6E9EF]">Number</th>
+                        <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-xs font-bold uppercase tracking-wider border-r border-[#E6E9EF]">DevRev ID</th>
+                        <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-xs font-bold uppercase tracking-wider border-r border-[#E6E9EF]">Feature Name</th>
+                        <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-xs font-bold uppercase tracking-wider border-r border-[#E6E9EF] min-w-[250px]">Description</th>
+                        <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-xs font-bold uppercase tracking-wider border-r border-[#E6E9EF]">Scope</th>
+                        <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-xs font-bold uppercase tracking-wider border-r border-[#E6E9EF]">Date Opened</th>
+                        <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-xs font-bold uppercase tracking-wider border-r border-[#E6E9EF]">Status Date</th>
+                        <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-xs font-bold uppercase tracking-wider border-r border-[#E6E9EF] min-w-[200px]">Comments</th>
+                        <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-xs font-bold uppercase tracking-wider border-r border-[#E6E9EF]">Reported By</th>
+                        <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-xs font-bold uppercase tracking-wider">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {report.risks_data.map((r) => (
+                        <tr key={r.Nbr} className="border-b border-[#E6E9EF] hover:bg-[#F9FAFC] transition-colors">
+                          <td className="py-3.5 px-4 font-mono text-[#6F7C95] font-semibold border-r border-[#E6E9EF]">#{r.Nbr}</td>
+                          <td className="py-3.5 px-4 font-mono text-[#6F7C95] border-r border-[#E6E9EF]">{r['DevRev ID'] || 'N/A'}</td>
+                          <td className="py-3.5 px-4 text-[#030522] font-semibold border-r border-[#E6E9EF]">{r['Feature Name'] || 'N/A'}</td>
+                          <td className="py-3.5 px-4 text-[#030522] font-medium whitespace-pre-wrap leading-relaxed border-r border-[#E6E9EF]">{r.Description || r.description || 'N/A'}</td>
+                          <td className="py-3.5 px-4 text-[#6F7C95] font-medium border-r border-[#E6E9EF]">{r.Scope || 'N/A'}</td>
+                          <td className="py-3.5 px-4 text-[#6F7C95] font-medium border-r border-[#E6E9EF]">{r['Date Opened'] || 'N/A'}</td>
+                          <td className="py-3.5 px-4 text-[#6F7C95] font-medium border-r border-[#E6E9EF]">{r['Status Date'] || 'N/A'}</td>
+                          <td className="py-3.5 px-4 text-[#6F7C95] font-medium whitespace-pre-wrap border-r border-[#E6E9EF]">{r.Comments || 'N/A'}</td>
+                          <td className="py-3.5 px-4 text-[#030522] font-semibold border-r border-[#E6E9EF]">{r.reportedBy || 'Unassigned'}</td>
+                          <td className="py-3.5 px-4">
+                            <span className={`inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded-md border ${
+                              r.Status?.toLowerCase() === 'mitigated' || r.Status?.toLowerCase() === 'closed' || r.Status?.toLowerCase() === 'resolved'
+                                ? 'text-green-700 bg-green-50 border-green-200'
+                                : 'text-red-700 bg-red-50 border-red-200'
+                            }`}>
+                              {r.Status || 'Open'}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <div className="text-center py-12 text-[#6F7C95] text-xs italic bg-[#F9FAFC] border border-dashed border-[#E6E9EF] rounded-lg">
+                  No risks registered.
+                </div>
+              )}
+            </div>
+            
+            {/* Footer */}
+            <div className="border-t border-[#E6E9EF] p-6 flex justify-end shrink-0">
+              <button
+                onClick={() => setShowAllRisksModal(false)}
+                className="px-4 py-2 border border-[#E6E9EF] text-[#030522] hover:bg-[#F9FAFC] text-xs font-bold rounded-md transition-all cursor-pointer shadow-sm bg-white"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* All Issues Modal */}
+      {showAllIssuesModal && (
+        <div className="fixed inset-0 bg-[#030522]/20 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0" onClick={() => setShowAllIssuesModal(false)}></div>
+          <div className="bg-white border border-[#E6E9EF] rounded-lg shadow-xl w-full max-w-4xl max-h-[80vh] flex flex-col relative z-10 animate-fade-in">
+            {/* Header */}
+            <div className="flex justify-between items-center border-b border-[#E6E9EF] p-6 shrink-0">
+              <h3 className="text-lg font-extrabold text-[#030522] tracking-tight">
+                All Issues ({report.issues_data?.length || 0})
+              </h3>
+              <button
+                onClick={() => setShowAllIssuesModal(false)}
+                className="p-1.5 border border-[#E6E9EF] text-[#030522] hover:bg-[#F9FAFC] rounded-md transition-all cursor-pointer shadow-sm bg-white"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            
+            {/* Body */}
+            <div className="overflow-y-auto p-6 flex-grow">
+              {report.issues_data && report.issues_data.length > 0 ? (
+                <div className="overflow-x-auto border border-[#E6E9EF] rounded-lg">
+                  <table className="w-full text-left text-xs border-collapse">
+                    <thead>
+                      <tr className="border-b border-[#E6E9EF]">
+                        <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-xs font-bold uppercase tracking-wider border-r border-[#E6E9EF]">Number</th>
+                        <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-xs font-bold uppercase tracking-wider border-r border-[#E6E9EF]">DevRev ID</th>
+                        <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-xs font-bold uppercase tracking-wider border-r border-[#E6E9EF]">Feature Name</th>
+                        <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-xs font-bold uppercase tracking-wider border-r border-[#E6E9EF] min-w-[250px]">Description</th>
+                        <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-xs font-bold uppercase tracking-wider border-r border-[#E6E9EF]">Scope</th>
+                        <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-xs font-bold uppercase tracking-wider border-r border-[#E6E9EF]">Date Opened</th>
+                        <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-xs font-bold uppercase tracking-wider border-r border-[#E6E9EF]">Status Date</th>
+                        <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-xs font-bold uppercase tracking-wider border-r border-[#E6E9EF] min-w-[200px]">Comments</th>
+                        <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-xs font-bold uppercase tracking-wider border-r border-[#E6E9EF]">Reported By</th>
+                        <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-xs font-bold uppercase tracking-wider">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {report.issues_data.map((i) => (
+                        <tr key={i.Nbr} className="border-b border-[#E6E9EF] hover:bg-[#F9FAFC] transition-colors">
+                          <td className="py-3.5 px-4 font-mono text-[#6F7C95] font-semibold border-r border-[#E6E9EF]">#{i.Nbr}</td>
+                          <td className="py-3.5 px-4 font-mono text-[#6F7C95] border-r border-[#E6E9EF]">{i['DevRev ID'] || 'N/A'}</td>
+                          <td className="py-3.5 px-4 text-[#030522] font-semibold border-r border-[#E6E9EF]">{i['Feature Name'] || 'N/A'}</td>
+                          <td className="py-3.5 px-4 text-[#030522] font-medium whitespace-pre-wrap leading-relaxed border-r border-[#E6E9EF]">{i.Description || i.description || 'N/A'}</td>
+                          <td className="py-3.5 px-4 text-[#6F7C95] font-medium border-r border-[#E6E9EF]">{i.Scope || 'N/A'}</td>
+                          <td className="py-3.5 px-4 text-[#6F7C95] font-medium border-r border-[#E6E9EF]">{i['Date Opened'] || 'N/A'}</td>
+                          <td className="py-3.5 px-4 text-[#6F7C95] font-medium border-r border-[#E6E9EF]">{i['Status Date'] || 'N/A'}</td>
+                          <td className="py-3.5 px-4 text-[#6F7C95] font-medium whitespace-pre-wrap border-r border-[#E6E9EF]">{i.Comments || 'N/A'}</td>
+                          <td className="py-3.5 px-4 text-[#030522] font-semibold border-r border-[#E6E9EF]">{i.reportedBy || 'Unassigned'}</td>
+                          <td className="py-3.5 px-4">
+                            <span className={`inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded-md border ${
+                              i.Status?.toLowerCase() === 'mitigated' || i.Status?.toLowerCase() === 'closed' || i.Status?.toLowerCase() === 'resolved'
+                                ? 'text-green-700 bg-green-50 border-green-200'
+                                : 'text-red-700 bg-red-50 border-red-200'
+                            }`}>
+                              {i.Status || 'Open'}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <div className="text-center py-12 text-[#6F7C95] text-xs italic bg-[#F9FAFC] border border-dashed border-[#E6E9EF] rounded-lg">
+                  No issues registered.
+                </div>
+              )}
+            </div>
+            
+            {/* Footer */}
+            <div className="border-t border-[#E6E9EF] p-6 flex justify-end shrink-0">
+              <button
+                onClick={() => setShowAllIssuesModal(false)}
+                className="px-4 py-2 border border-[#E6E9EF] text-[#030522] hover:bg-[#F9FAFC] text-xs font-bold rounded-md transition-all cursor-pointer shadow-sm bg-white"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}
