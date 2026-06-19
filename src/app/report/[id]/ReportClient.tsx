@@ -312,210 +312,170 @@ export default function ReportClient() {
             </div>
           </div>
 
-          {/* 2. Charts & Sprints Column Split */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          {/* 2. Executive Highlights (Full Width) */}
+          <div className="bg-white border border-[#E6E9EF] rounded-lg shadow-sm p-6">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-[#6F7C95] mb-4 flex items-center gap-1.5">
+              <Sparkles className="h-4.5 w-4.5 text-[#3B42C4]" />
+              Executive Highlights
+            </h3>
+            <ul className="list-disc pl-4 flex flex-col gap-2.5 text-xs text-[#030522] font-medium">
+              {payload.highlights.map((h, i) => (
+                <li key={i} className="line-clamp-4 leading-relaxed">{h}</li>
+              ))}
+              {payload.highlights.length === 0 && (
+                <li className="italic text-[#6F7C95] list-none">No highlights added.</li>
+              )}
+            </ul>
+          </div>
+
+          {/* 3. Capabilities by Business Outcome (Full Width) */}
+          <div className="bg-white border border-[#E6E9EF] rounded-lg shadow-sm p-6">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-[#6F7C95] mb-4 flex items-center gap-1.5">
+              <Briefcase className="h-4.5 w-4.5 text-[#3B42C4]" />
+              Capabilities by Business Outcome
+            </h3>
             
-            {/* Web Recharts & Sprints (8 cols) */}
-            <div className="lg:col-span-8 flex flex-col gap-6">
-              
-              {/* Outcome Bar Chart */}
-              <div className="bg-white border border-[#E6E9EF] rounded-lg shadow-sm p-6">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-[#6F7C95] mb-4 flex items-center gap-1.5">
-                  <Briefcase className="h-4.5 w-4.5 text-[#3B42C4]" />
-                  Capabilities by Business Outcome
-                </h3>
-                
-                <div className="h-64 w-full">
-                  {payload.goalChartData.length > 0 ? (
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart
-                        layout="vertical"
-                        data={payload.goalChartData}
-                        margin={{ top: 5, right: 30, left: 10, bottom: 5 }}
-                      >
-                        <XAxis type="number" stroke="#475569" fontSize={11} tickLine={false} />
-                        <YAxis 
-                          type="category" 
-                          dataKey="goal" 
-                          stroke="#475569" 
-                          fontSize={11} 
-                          tickLine={false} 
-                          width={110} 
-                        />
-                        <Tooltip
-                          contentStyle={{ background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '8px' }}
-                          labelStyle={{ color: '#0f172a', fontWeight: 'bold' }}
-                        />
-                        <Bar dataKey="count" radius={[0, 4, 4, 0]} barSize={14}>
-                          {payload.goalChartData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
-                          ))}
-                        </Bar>
-                      </BarChart>
-                    </ResponsiveContainer>
-                  ) : (
-                    <div className="h-full flex items-center justify-center text-slate-400 text-xs italic">No Goal parameters aggregated.</div>
-                  )}
-                </div>
-              </div>
+            <div className="h-64 w-full">
+              {payload.goalChartData.length > 0 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    layout="vertical"
+                    data={payload.goalChartData}
+                    margin={{ top: 5, right: 30, left: 10, bottom: 5 }}
+                  >
+                    <XAxis type="number" stroke="#475569" fontSize={11} tickLine={false} />
+                    <YAxis 
+                      type="category" 
+                      dataKey="goal" 
+                      stroke="#475569" 
+                      fontSize={11} 
+                      tickLine={false} 
+                      width={110} 
+                    />
+                    <Tooltip
+                      contentStyle={{ background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '8px' }}
+                      labelStyle={{ color: '#0f172a', fontWeight: 'bold' }}
+                    />
+                    <Bar dataKey="count" radius={[0, 4, 4, 0]} barSize={14}>
+                      {payload.goalChartData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="h-full flex items-center justify-center text-slate-400 text-xs italic">No Goal parameters aggregated.</div>
+              )}
+            </div>
+          </div>
 
-              {/* Sprint Progress trackers */}
-              <div className="bg-white border border-[#E6E9EF] rounded-lg shadow-sm p-6">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-[#6F7C95] mb-4 flex items-center gap-1.5">
-                  <Layers className="h-4.5 w-4.5 text-[#3B42C4]" />
-                  Sprint Completion Progress
-                </h3>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {payload.sprintProgress.map(s => (
-                    <div key={s.sprint} className="bg-[#F9FAFC] border border-[#E6E9EF] p-4 rounded-lg flex flex-col gap-2 shadow-sm">
-                      <div className="flex justify-between items-center text-xs font-bold text-[#030522]">
-                        <span>{s.sprint}</span>
-                        <span className="text-[#3B42C4]">{s.percentage}% ({s.completed}/{s.total})</span>
-                      </div>
-                      <div className="w-full bg-[#E6E9EF] h-2.5 rounded-full overflow-hidden border border-[#E6E9EF]">
-                        <div 
-                          className="bg-[#3B42C4] h-full rounded-full transition-all duration-500" 
-                          style={{ width: `${s.percentage}%` }}
-                        ></div>
-                      </div>
-                    </div>
-                  ))}
-                  {payload.sprintProgress.length === 0 && (
-                    <div className="col-span-2 text-center text-slate-400 text-xs italic py-4">No Sprint information tagged.</div>
-                  )}
-                </div>
+          {/* 4. Risks & Issues Grid (Side-by-Side) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Risks Panel */}
+            <div className="bg-white border border-[#E6E9EF] rounded-lg shadow-sm p-6">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#6F7C95] mb-4 flex items-center gap-1.5">
+                <AlertTriangle className="h-4.5 w-4.5 text-red-600" />
+                Risks Log
+              </h3>
+              <div className="overflow-x-auto border border-[#E6E9EF] rounded-lg">
+                <table className="w-full text-left text-xs border-collapse">
+                  <thead>
+                    <tr className="border-b border-[#E6E9EF]">
+                      <th className="py-2.5 px-3 bg-[#F9FAFC] text-[#6F7C95] text-[10px] font-bold uppercase tracking-wider">Number</th>
+                      <th className="py-2.5 px-3 bg-[#F9FAFC] text-[#6F7C95] text-[10px] font-bold uppercase tracking-wider">Description</th>
+                      <th className="py-2.5 px-3 bg-[#F9FAFC] text-[#6F7C95] text-[10px] font-bold uppercase tracking-wider text-right">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(report.risks_data || []).slice(0, 3).map((r) => {
+                      const desc = r.Description || r.description || '';
+                      const truncatedDesc = desc.length > 50 ? desc.substring(0, 50) + '...' : desc;
+                      return (
+                        <tr key={r.Nbr} className="border-b border-[#E6E9EF] hover:bg-[#F9FAFC] transition-colors">
+                          <td className="py-3 px-3 font-mono text-[#6F7C95]">#{r.Nbr}</td>
+                          <td className="py-3 px-3 text-[#030522] font-medium" title={desc}>{truncatedDesc}</td>
+                          <td className="py-3 px-3 text-right">
+                            <span className={`inline-flex items-center text-[9px] font-bold px-1.5 py-0.5 rounded-md border ${
+                              r.Status?.toLowerCase() === 'mitigated' || r.Status?.toLowerCase() === 'closed' || r.Status?.toLowerCase() === 'resolved'
+                                ? 'text-green-700 bg-green-50 border-green-200'
+                                : 'text-red-700 bg-red-50 border-red-200'
+                            }`}>
+                              {r.Status || 'Open'}
+                            </span>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                    {(!report.risks_data || report.risks_data.length === 0) && (
+                      <tr>
+                        <td colSpan={3} className="py-4 text-center text-[#6F7C95] italic">No active risks.</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
               </div>
-
+              {report.risks_data && report.risks_data.length > 0 && (
+                <button
+                  onClick={() => setShowAllRisksModal(true)}
+                  className="border border-[#E6E9EF] text-[#3B42C4] hover:bg-[#F9FAFC] w-full mt-4 py-2 text-sm font-medium rounded-md transition-all cursor-pointer text-center"
+                >
+                  View All Risks
+                </button>
+              )}
             </div>
 
-            {/* Highlights & Risks sidebar (4 cols) */}
-            <div className="lg:col-span-4 flex flex-col gap-6">
-              
-              {/* Highlights */}
-              <div className="bg-white border border-[#E6E9EF] rounded-lg shadow-sm p-6">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-[#6F7C95] mb-4 flex items-center gap-1.5">
-                  <Sparkles className="h-4.5 w-4.5 text-[#3B42C4]" />
-                  Executive Highlights
-                </h3>
-                <ul className="list-disc pl-4 flex flex-col gap-2.5 text-xs text-[#030522] font-medium">
-                  {payload.highlights.map((h, i) => (
-                    <li key={i} className="line-clamp-4 leading-relaxed">{h}</li>
-                  ))}
-                  {payload.highlights.length === 0 && (
-                    <li className="italic text-[#6F7C95] list-none">No highlights added.</li>
-                  )}
-                </ul>
-              </div>
-
-              {/* Risks Panel */}
-              <div className="bg-white border border-[#E6E9EF] rounded-lg shadow-sm p-6">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-[#6F7C95] mb-4 flex items-center gap-1.5">
-                  <AlertTriangle className="h-4.5 w-4.5 text-red-600" />
-                  Risks Log
-                </h3>
-                <div className="overflow-x-auto border border-[#E6E9EF] rounded-lg">
-                  <table className="w-full text-left text-xs border-collapse">
-                    <thead>
-                      <tr className="border-b border-[#E6E9EF]">
-                        <th className="py-2.5 px-3 bg-[#F9FAFC] text-[#6F7C95] text-[10px] font-bold uppercase tracking-wider">Number</th>
-                        <th className="py-2.5 px-3 bg-[#F9FAFC] text-[#6F7C95] text-[10px] font-bold uppercase tracking-wider">Description</th>
-                        <th className="py-2.5 px-3 bg-[#F9FAFC] text-[#6F7C95] text-[10px] font-bold uppercase tracking-wider text-right">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {(report.risks_data || []).slice(0, 3).map((r) => {
-                        const desc = r.Description || r.description || '';
-                        const truncatedDesc = desc.length > 50 ? desc.substring(0, 50) + '...' : desc;
-                        return (
-                          <tr key={r.Nbr} className="border-b border-[#E6E9EF] hover:bg-[#F9FAFC] transition-colors">
-                            <td className="py-3 px-3 font-mono text-[#6F7C95]">#{r.Nbr}</td>
-                            <td className="py-3 px-3 text-[#030522] font-medium" title={desc}>{truncatedDesc}</td>
-                            <td className="py-3 px-3 text-right">
-                              <span className={`inline-flex items-center text-[9px] font-bold px-1.5 py-0.5 rounded-md border ${
-                                r.Status?.toLowerCase() === 'mitigated' || r.Status?.toLowerCase() === 'closed' || r.Status?.toLowerCase() === 'resolved'
-                                  ? 'text-green-700 bg-green-50 border-green-200'
-                                  : 'text-red-700 bg-red-50 border-red-200'
-                              }`}>
-                                {r.Status || 'Open'}
-                              </span>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                      {(!report.risks_data || report.risks_data.length === 0) && (
-                        <tr>
-                          <td colSpan={3} className="py-4 text-center text-[#6F7C95] italic">No active risks.</td>
+            {/* Issues Panel */}
+            <div className="bg-white border border-[#E6E9EF] rounded-lg shadow-sm p-6">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#6F7C95] mb-4 flex items-center gap-1.5">
+                <AlertTriangle className="h-4.5 w-4.5 text-[#3B42C4]" />
+                Issues Log
+              </h3>
+              <div className="overflow-x-auto border border-[#E6E9EF] rounded-lg">
+                <table className="w-full text-left text-xs border-collapse">
+                  <thead>
+                    <tr className="border-b border-[#E6E9EF]">
+                      <th className="py-2.5 px-3 bg-[#F9FAFC] text-[#6F7C95] text-[10px] font-bold uppercase tracking-wider">Number</th>
+                      <th className="py-2.5 px-3 bg-[#F9FAFC] text-[#6F7C95] text-[10px] font-bold uppercase tracking-wider">Description</th>
+                      <th className="py-2.5 px-3 bg-[#F9FAFC] text-[#6F7C95] text-[10px] font-bold uppercase tracking-wider text-right">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(report.issues_data || []).slice(0, 3).map((i) => {
+                      const desc = i.Description || i.description || '';
+                      const truncatedDesc = desc.length > 50 ? desc.substring(0, 50) + '...' : desc;
+                      return (
+                        <tr key={i.Nbr} className="border-b border-[#E6E9EF] hover:bg-[#F9FAFC] transition-colors">
+                          <td className="py-3 px-3 font-mono text-[#6F7C95]">#{i.Nbr}</td>
+                          <td className="py-3 px-3 text-[#030522] font-medium" title={desc}>{truncatedDesc}</td>
+                          <td className="py-3 px-3 text-right">
+                            <span className={`inline-flex items-center text-[9px] font-bold px-1.5 py-0.5 rounded-md border ${
+                              i.Status?.toLowerCase() === 'mitigated' || i.Status?.toLowerCase() === 'closed' || i.Status?.toLowerCase() === 'resolved'
+                                ? 'text-green-700 bg-green-50 border-green-200'
+                                : 'text-red-700 bg-red-50 border-red-200'
+                            }`}>
+                              {i.Status || 'Open'}
+                            </span>
+                          </td>
                         </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-                {report.risks_data && report.risks_data.length > 0 && (
-                  <button
-                    onClick={() => setShowAllRisksModal(true)}
-                    className="border border-[#E6E9EF] text-[#3B42C4] hover:bg-[#F9FAFC] w-full mt-4 py-2 text-sm font-medium rounded-md transition-all cursor-pointer text-center"
-                  >
-                    View All Risks
-                  </button>
-                )}
-              </div>
-
-              {/* Issues Panel */}
-              <div className="bg-white border border-[#E6E9EF] rounded-lg shadow-sm p-6">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-[#6F7C95] mb-4 flex items-center gap-1.5">
-                  <AlertTriangle className="h-4.5 w-4.5 text-[#3B42C4]" />
-                  Issues Log
-                </h3>
-                <div className="overflow-x-auto border border-[#E6E9EF] rounded-lg">
-                  <table className="w-full text-left text-xs border-collapse">
-                    <thead>
-                      <tr className="border-b border-[#E6E9EF]">
-                        <th className="py-2.5 px-3 bg-[#F9FAFC] text-[#6F7C95] text-[10px] font-bold uppercase tracking-wider">Number</th>
-                        <th className="py-2.5 px-3 bg-[#F9FAFC] text-[#6F7C95] text-[10px] font-bold uppercase tracking-wider">Description</th>
-                        <th className="py-2.5 px-3 bg-[#F9FAFC] text-[#6F7C95] text-[10px] font-bold uppercase tracking-wider text-right">Status</th>
+                      );
+                    })}
+                    {(!report.issues_data || report.issues_data.length === 0) && (
+                      <tr>
+                        <td colSpan={3} className="py-4 text-center text-[#6F7C95] italic">No active issues.</td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      {(report.issues_data || []).slice(0, 3).map((i) => {
-                        const desc = i.Description || i.description || '';
-                        const truncatedDesc = desc.length > 50 ? desc.substring(0, 50) + '...' : desc;
-                        return (
-                          <tr key={i.Nbr} className="border-b border-[#E6E9EF] hover:bg-[#F9FAFC] transition-colors">
-                            <td className="py-3 px-3 font-mono text-[#6F7C95]">#{i.Nbr}</td>
-                            <td className="py-3 px-3 text-[#030522] font-medium" title={desc}>{truncatedDesc}</td>
-                            <td className="py-3 px-3 text-right">
-                              <span className={`inline-flex items-center text-[9px] font-bold px-1.5 py-0.5 rounded-md border ${
-                                i.Status?.toLowerCase() === 'mitigated' || i.Status?.toLowerCase() === 'closed' || i.Status?.toLowerCase() === 'resolved'
-                                  ? 'text-green-700 bg-green-50 border-green-200'
-                                  : 'text-red-700 bg-red-50 border-red-200'
-                              }`}>
-                                {i.Status || 'Open'}
-                              </span>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                      {(!report.issues_data || report.issues_data.length === 0) && (
-                        <tr>
-                          <td colSpan={3} className="py-4 text-center text-[#6F7C95] italic">No active issues.</td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-                {report.issues_data && report.issues_data.length > 0 && (
-                  <button
-                    onClick={() => setShowAllIssuesModal(true)}
-                    className="border border-[#E6E9EF] text-[#3B42C4] hover:bg-[#F9FAFC] w-full mt-4 py-2 text-sm font-medium rounded-md transition-all cursor-pointer text-center"
-                  >
-                    View All Issues
-                  </button>
-                )}
+                    )}
+                  </tbody>
+                </table>
               </div>
-
+              {report.issues_data && report.issues_data.length > 0 && (
+                <button
+                  onClick={() => setShowAllIssuesModal(true)}
+                  className="border border-[#E6E9EF] text-[#3B42C4] hover:bg-[#F9FAFC] w-full mt-4 py-2 text-sm font-medium rounded-md transition-all cursor-pointer text-center"
+                >
+                  View All Issues
+                </button>
+              )}
             </div>
-
           </div>
 
           {/* 3. Mapped Features Grid Table */}
