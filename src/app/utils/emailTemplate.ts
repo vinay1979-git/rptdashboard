@@ -56,6 +56,23 @@ export function generateGmailReportHtml(
   // Extract report_type
   const report_type = report?.report_type || 'Product Grow report';
 
+  // Group and count capabilities by their goalOutcome (or Business Outcome)
+  const outcomeCounts: { [key: string]: number } = {};
+  featuresList.forEach(f => {
+    const outcome = f.goalOutcome || f['Goal[0]'] || 'Unassigned';
+    outcomeCounts[outcome] = (outcomeCounts[outcome] || 0) + 1;
+  });
+
+  // Sort them from highest count to lowest
+  const sortedOutcomes = Object.entries(outcomeCounts)
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count);
+
+  // Find the maximum count to act as the 100% width baseline
+  const maxCount = sortedOutcomes.length > 0
+    ? Math.max(...sortedOutcomes.map(o => o.count))
+    : 1;
+
   // Major highlights HTML
   const highlightsHtml = payload.highlights
     .map(
@@ -108,6 +125,27 @@ export function generateGmailReportHtml(
           </tr>
         </table>
       </div>
+
+      <!-- Capabilities by Business Outcome Chart -->
+      <div style="margin-bottom: 32px; font-family: Arial, sans-serif;">
+        <h3 style="font-size: 15px; font-weight: bold; color: #030522; border-bottom: 1px solid #E6E9EF; padding-bottom: 8px; margin-bottom: 16px; margin-top: 0; text-transform: uppercase; letter-spacing: 0.5px;">Capabilities by Business Outcome</h3>
+        ${sortedOutcomes.map(o => {
+          const outcomeName = o.name;
+          const count = o.count;
+          return `
+          <div style="margin-bottom: 12px;">
+            <div style="display: flex; justify-content: space-between; font-size: 13px; color: #6F7C95; margin-bottom: 4px;">
+              <span>${outcomeName}</span>
+              <strong>${count}</strong>
+            </div>
+            <div style="width: 100%; background-color: #E6E9EF; border-radius: 4px; height: 12px;">
+              <div style="width: ${(count / maxCount) * 100}%; background-color: #3B42C4; border-radius: 4px; height: 12px;"></div>
+            </div>
+          </div>
+          `;
+        }).join('')}
+      </div>
+
 
       <!-- Highlights -->
       ${payload.highlights.length > 0 ? `
