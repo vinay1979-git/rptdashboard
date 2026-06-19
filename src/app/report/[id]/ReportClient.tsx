@@ -625,6 +625,71 @@ export default function ReportClient() {
               </button>
             </div>
 
+            {/* Metadata Grid */}
+            <div className="grid grid-cols-2 gap-4 mb-6 border-b border-[#E6E9EF] pb-5">
+              <div className="flex flex-col gap-0.5">
+                <span className="text-[10px] uppercase font-bold text-[#6F7C95] tracking-wider">DevRev ID / Part ID</span>
+                <span className="text-xs font-mono text-[#030522]">{selectedFeature.devRevId || selectedFeature['Part id']}</span>
+              </div>
+              <div className="flex flex-col gap-0.5">
+                <span className="text-[10px] uppercase font-bold text-[#6F7C95] tracking-wider">RAG Status</span>
+                <div>
+                  {selectedFeature.ragStatus ? (
+                    <span className={`inline-flex items-center text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${
+                      selectedFeature.ragStatus.toLowerCase() === 'red' || selectedFeature.ragStatus.toLowerCase() === 'r' ? 'text-red-700 bg-red-50 border-red-200' :
+                      selectedFeature.ragStatus.toLowerCase() === 'amber' || selectedFeature.ragStatus.toLowerCase() === 'a' ? 'text-amber-700 bg-amber-50 border-amber-200' :
+                      selectedFeature.ragStatus.toLowerCase() === 'green' || selectedFeature.ragStatus.toLowerCase() === 'g' ? 'text-green-700 bg-green-50 border-green-200' :
+                      'text-slate-700 bg-slate-50 border-slate-200'
+                    }`}>
+                      {selectedFeature.ragStatus}
+                    </span>
+                  ) : (
+                    <span className="text-xs text-slate-400 italic">N/A</span>
+                  )}
+                </div>
+              </div>
+              <div className="flex flex-col gap-0.5">
+                <span className="text-[10px] uppercase font-bold text-[#6F7C95] tracking-wider">Percentage Complete</span>
+                <span className="text-xs font-bold text-[#030522]">{selectedFeature.percentageComplete !== undefined ? `${selectedFeature.percentageComplete}%` : '0%'}</span>
+              </div>
+              <div className="flex flex-col gap-0.5">
+                <span className="text-[10px] uppercase font-bold text-[#6F7C95] tracking-wider">Status (Calculated)</span>
+                <div>
+                  <span className={`inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded-md border ${
+                    selectedFeature.status === 'Completed' ? 'text-green-700 bg-green-50 border-green-200' :
+                    selectedFeature.status === 'In Progress' ? 'text-blue-800 bg-blue-50 border-blue-200' :
+                    'text-[#6F7C95] bg-[#F9FAFC] border-[#E6E9EF]'
+                  }`}>
+                    {selectedFeature.status === 'Not Picked Up' ? 'Not Started' : selectedFeature.status}
+                  </span>
+                </div>
+              </div>
+              <div className="flex flex-col gap-0.5">
+                <span className="text-[10px] uppercase font-bold text-[#6F7C95] tracking-wider">Sprint</span>
+                <span className="text-xs text-[#030522] font-semibold">{selectedFeature.sprint || selectedFeature['Tags[0]'] || 'N/A'}</span>
+              </div>
+              <div className="flex flex-col gap-0.5">
+                <span className="text-[10px] uppercase font-bold text-[#6F7C95] tracking-wider">Goal Outcome</span>
+                <span className="text-xs text-[#030522] font-semibold">{selectedFeature.goalOutcome || selectedFeature['Goal[0]'] || 'N/A'}</span>
+              </div>
+            </div>
+
+            {/* Larger Text Fields */}
+            <div className="flex flex-col gap-4 mb-6 border-b border-[#E6E9EF] pb-5">
+              <div className="flex flex-col gap-1">
+                <span className="text-[10px] uppercase font-bold text-[#6F7C95] tracking-wider">Description / Theme</span>
+                <p className="text-xs text-[#030522] leading-relaxed font-medium bg-[#F9FAFC] border border-[#E6E9EF] rounded-lg p-3">
+                  {selectedFeature.description || selectedFeature['Theme[0]'] || 'No description provided.'}
+                </p>
+              </div>
+              <div className="flex flex-col gap-1">
+                <span className="text-[10px] uppercase font-bold text-[#6F7C95] tracking-wider">Reason</span>
+                <p className="text-xs text-[#030522] leading-relaxed font-medium bg-[#F9FAFC] border border-[#E6E9EF] rounded-lg p-3">
+                  {selectedFeature.reason || 'No reasoning details logged.'}
+                </p>
+              </div>
+            </div>
+
             {/* Task list table */}
             <div className="flex-grow overflow-y-auto min-h-0">
               <h4 className="text-xs font-bold uppercase tracking-wider text-[#6F7C95] mb-3 flex items-center gap-1.5">

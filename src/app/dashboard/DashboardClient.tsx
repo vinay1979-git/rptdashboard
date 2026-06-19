@@ -209,6 +209,7 @@ export default function DashboardClient() {
         reason: String(row['Reason'] || row['reason'] || '').trim(),
         goalOutcome: String(row['Goal Outcome'] || row['goalOutcome'] || row['goal_outcome'] || row['Goal[0]'] || row['goal'] || '').trim(),
         sprint: String(row['Sprint'] || row['sprint'] || fallbackSprint || '').trim(),
+        description: String(row['Description'] || row['description'] || '').trim(),
       };
     });
   };

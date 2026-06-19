@@ -13,6 +13,7 @@ export interface FeatureData {
   reason: string;
   goalOutcome?: string;
   sprint?: string;
+  description?: string;
 }
 
 export interface TaskData {
