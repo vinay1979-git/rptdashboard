@@ -8,6 +8,11 @@ export interface FeatureData {
   'Service (Temp)[0]': string;
   'Created date': string;
   'Tags[0]': string;
+  percentageComplete: number;
+  ragStatus: string;
+  reason: string;
+  goalOutcome?: string;
+  sprint?: string;
 }
 
 export interface TaskData {

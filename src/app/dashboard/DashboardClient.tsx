@@ -180,6 +180,20 @@ export default function DashboardClient() {
   const sanitizeFeatures = (raw: Record<string, string>[]): FeatureData[] => {
     return raw.map(row => {
       const partId = String(row['Part ID'] || row['Part id'] || row['part_id'] || row['Part-ID'] || '').trim();
+      
+      // Parse percentageComplete defensively
+      const pctStr = String(row['Percentage Complete'] || row['% Complete'] || row['percentageComplete'] || row['percentage_complete'] || '').trim();
+      const parsedPct = parseFloat(pctStr.replace(/%/g, ''));
+      const percentageComplete = isNaN(parsedPct) ? 0 : parsedPct;
+
+      // Extract normalized sprint name from Tags[0] as fallback
+      const tags = String(row['Tags[0]'] || row['tags'] || '').trim();
+      const sprintMatch = tags.match(/sprint\s*[-_]*\s*\d+/i);
+      let fallbackSprint = '';
+      if (sprintMatch) {
+        fallbackSprint = sprintMatch[0].replace(/\s*[-_]*\s*/i, ' ').toUpperCase();
+      }
+
       return {
         'Part id': partId,
         devRevId: partId,
@@ -189,7 +203,12 @@ export default function DashboardClient() {
         'Goal[0]': String(row['Goal[0]'] || row['goal'] || '').trim(),
         'Service (Temp)[0]': String(row['Service (Temp)[0]'] || row['service'] || '').trim(),
         'Created date': String(row['Created date'] || row['created_date'] || '').trim(),
-        'Tags[0]': String(row['Tags[0]'] || row['tags'] || '').trim(),
+        'Tags[0]': tags,
+        percentageComplete,
+        ragStatus: String(row['RAG Status'] || row['ragStatus'] || row['rag_status'] || '').trim(),
+        reason: String(row['Reason'] || row['reason'] || '').trim(),
+        goalOutcome: String(row['Goal Outcome'] || row['goalOutcome'] || row['goal_outcome'] || row['Goal[0]'] || row['goal'] || '').trim(),
+        sprint: String(row['Sprint'] || row['sprint'] || fallbackSprint || '').trim(),
       };
     });
   };
