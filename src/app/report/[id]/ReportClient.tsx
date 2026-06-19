@@ -550,7 +550,20 @@ export default function ReportClient() {
                       onDoubleClick={() => setSelectedFeature(f)}
                       className="border-b border-[#E6E9EF] hover:bg-[#F9FAFC] transition-all cursor-pointer group select-none"
                     >
-                      <td className="py-3.5 px-4 font-mono text-[#6F7C95] group-hover:text-[#3B42C4] transition-colors">{f.devRevId || f['Part id']}</td>
+                      <td className="py-3.5 px-4 font-mono text-[#6F7C95] group-hover:text-[#3B42C4] transition-colors" onDoubleClick={(e) => e.stopPropagation()}>
+                        {(f.devRevId || f['Part id']) ? (
+                          <a 
+                            href={`https://app.devrev.ai/lentra/parts/${f.devRevId || f['Part id']}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#3B42C4] hover:underline font-medium"
+                          >
+                            {f.devRevId || f['Part id']}
+                          </a>
+                        ) : (
+                          '-'
+                        )}
+                      </td>
                       <td className="py-3.5 px-4 font-bold text-[#030522] group-hover:text-[#3B42C4] transition-colors">{f.Name}</td>
                       <td className="py-3.5 px-4 text-[#6F7C95] font-medium">{f['Owner[0]']}</td>
                       <td className="py-3.5 px-4">
@@ -679,7 +692,20 @@ export default function ReportClient() {
             <div className="grid grid-cols-2 gap-4 mb-6 border-b border-[#E6E9EF] pb-5">
               <div className="flex flex-col gap-0.5">
                 <span className="text-[10px] uppercase font-bold text-[#6F7C95] tracking-wider">DevRev ID / Part ID</span>
-                <span className="text-xs font-mono text-[#030522]">{selectedFeature.devRevId || selectedFeature['Part id']}</span>
+                <span className="text-xs font-mono text-[#030522]">
+                  {(selectedFeature.devRevId || selectedFeature['Part id']) ? (
+                    <a 
+                      href={`https://app.devrev.ai/lentra/parts/${selectedFeature.devRevId || selectedFeature['Part id']}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[#3B42C4] hover:underline font-medium"
+                    >
+                      {selectedFeature.devRevId || selectedFeature['Part id']}
+                    </a>
+                  ) : (
+                    '-'
+                  )}
+                </span>
               </div>
               <div className="flex flex-col gap-0.5">
                 <span className="text-[10px] uppercase font-bold text-[#6F7C95] tracking-wider">RAG Status</span>
@@ -887,7 +913,20 @@ export default function ReportClient() {
                       {report.risks_data.map((r) => (
                         <tr key={r.Nbr} className="border-b border-[#E6E9EF] hover:bg-[#F9FAFC] transition-colors">
                           <td className="py-3.5 px-4 font-mono text-[#6F7C95] font-semibold border-r border-[#E6E9EF]">#{r.Nbr}</td>
-                          <td className="py-3.5 px-4 font-mono text-[#6F7C95] border-r border-[#E6E9EF]">{r['DevRev ID'] || 'N/A'}</td>
+                          <td className="py-3.5 px-4 font-mono text-[#6F7C95] border-r border-[#E6E9EF]">
+                            {r['DevRev ID'] ? (
+                              <a 
+                                href={`https://app.devrev.ai/lentra/parts/${r['DevRev ID']}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-[#3B42C4] hover:underline font-medium"
+                              >
+                                {r['DevRev ID']}
+                              </a>
+                            ) : (
+                              '-'
+                            )}
+                          </td>
                           <td className="py-3.5 px-4 text-[#030522] font-semibold border-r border-[#E6E9EF]">{r['Feature Name'] || 'N/A'}</td>
                           <td className="py-3.5 px-4 text-[#030522] font-medium whitespace-pre-wrap leading-relaxed border-r border-[#E6E9EF]">{r.Description || r.description || 'N/A'}</td>
                           <td className="py-3.5 px-4 text-[#6F7C95] font-medium border-r border-[#E6E9EF]">{r.Scope || 'N/A'}</td>
@@ -970,7 +1009,20 @@ export default function ReportClient() {
                       {report.issues_data.map((i) => (
                         <tr key={i.Nbr} className="border-b border-[#E6E9EF] hover:bg-[#F9FAFC] transition-colors">
                           <td className="py-3.5 px-4 font-mono text-[#6F7C95] font-semibold border-r border-[#E6E9EF]">#{i.Nbr}</td>
-                          <td className="py-3.5 px-4 font-mono text-[#6F7C95] border-r border-[#E6E9EF]">{i['DevRev ID'] || 'N/A'}</td>
+                          <td className="py-3.5 px-4 font-mono text-[#6F7C95] border-r border-[#E6E9EF]">
+                            {i['DevRev ID'] ? (
+                              <a 
+                                href={`https://app.devrev.ai/lentra/parts/${i['DevRev ID']}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-[#3B42C4] hover:underline font-medium"
+                              >
+                                {i['DevRev ID']}
+                              </a>
+                            ) : (
+                              '-'
+                            )}
+                          </td>
                           <td className="py-3.5 px-4 text-[#030522] font-semibold border-r border-[#E6E9EF]">{i['Feature Name'] || 'N/A'}</td>
                           <td className="py-3.5 px-4 text-[#030522] font-medium whitespace-pre-wrap leading-relaxed border-r border-[#E6E9EF]">{i.Description || i.description || 'N/A'}</td>
                           <td className="py-3.5 px-4 text-[#6F7C95] font-medium border-r border-[#E6E9EF]">{i.Scope || 'N/A'}</td>
