@@ -49,6 +49,11 @@ export function generateGmailReportHtml(
     ? featuresList.reduce((acc, f) => acc + (f.percentageComplete || 0), 0) / totalFeaturesCount
     : 0;
 
+  // Calculate new feature metrics
+  const totalFeatures = featuresList.length;
+  const featuresOnTrack = featuresList.filter(f => f.ragStatus?.toLowerCase().includes('green')).length;
+  const featuresAtRisk = featuresList.filter(f => f.ragStatus?.toLowerCase().includes('amber')).length;
+
   // Slice risks_data and issues_data to only the Top 3 items
   const risksList: RiskIssueData[] = (report?.risks_data || []).slice(0, 3);
   const issuesList: RiskIssueData[] = (report?.issues_data || []).slice(0, 3);
@@ -116,17 +121,17 @@ export function generateGmailReportHtml(
           <tr>
             <td width="30%" valign="top" style="background-color: #F9FAFC; border: 1px solid #E6E9EF; border-radius: 6px; padding: 16px; text-align: center; font-family: Arial, sans-serif;">
               <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #6F7C95; font-weight: bold;">Total Features</div>
-              <div style="font-size: 24px; font-weight: bold; margin-top: 6px; color: #030522;">${totalFeaturesCount}</div>
+              <div style="font-size: 24px; font-weight: bold; margin-top: 6px; color: #030522;">${totalFeatures}</div>
             </td>
             <td width="5%"></td>
             <td width="30%" valign="top" style="background-color: #F9FAFC; border: 1px solid #E6E9EF; border-radius: 6px; padding: 16px; text-align: center; font-family: Arial, sans-serif;">
-              <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #6F7C95; font-weight: bold;">Active Risks</div>
-              <div style="font-size: 24px; font-weight: bold; margin-top: 6px; color: #ef4444;">${activeRisksCount}</div>
+              <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #6F7C95; font-weight: bold;">Features on track</div>
+              <div style="font-size: 24px; font-weight: bold; margin-top: 6px; color: #030522;">${featuresOnTrack}</div>
             </td>
             <td width="5%"></td>
             <td width="30%" valign="top" style="background-color: #F9FAFC; border: 1px solid #E6E9EF; border-radius: 6px; padding: 16px; text-align: center; font-family: Arial, sans-serif;">
-              <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #6F7C95; font-weight: bold;">Total Issues</div>
-              <div style="font-size: 24px; font-weight: bold; margin-top: 6px; color: #ef4444;">${report?.issues_data?.length || 0}</div>
+              <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #6F7C95; font-weight: bold;">Features at risk</div>
+              <div style="font-size: 24px; font-weight: bold; margin-top: 6px; color: #030522;">${featuresAtRisk}</div>
             </td>
           </tr>
         </table>
