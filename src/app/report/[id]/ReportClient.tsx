@@ -539,7 +539,7 @@ export default function ReportClient() {
                     <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-sm font-medium uppercase tracking-wider">Feature Name</th>
                     <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-sm font-medium uppercase tracking-wider">Owner</th>
                     <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-sm font-medium uppercase tracking-wider">RAG Status</th>
-                    <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-sm font-medium uppercase tracking-wider">Percentage Complete</th>
+                    <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-sm font-medium uppercase tracking-wider">%age Complete</th>
                     <th className="py-3 px-4 bg-[#F9FAFC] text-[#6F7C95] text-sm font-medium uppercase tracking-wider">Reason</th>
                   </tr>
                 </thead>
@@ -581,8 +581,8 @@ export default function ReportClient() {
                         )}
                       </td>
                       <td className="py-3.5 px-4 text-[#6F7C95] font-medium">{f.percentageComplete !== undefined ? `${f.percentageComplete}%` : '0%'}</td>
-                      <td className="py-3.5 px-4 text-[#6F7C95] font-medium max-w-[200px] truncate" title={f.reason}>
-                        {f.reason ? (f.reason.length > 30 ? f.reason.slice(0, 30) + '...' : f.reason) : 'N/A'}
+                      <td className="py-3.5 px-4 text-[#6F7C95] font-medium whitespace-normal break-words min-w-[200px]" title={f.reason}>
+                        {f.reason || 'N/A'}
                       </td>
                     </tr>
                   ))}

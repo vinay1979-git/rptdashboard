@@ -168,9 +168,9 @@ export function processReport(
 
   // 5. Calculate global performance stats
   const totalFeatures = mappedFeatures.length;
-  const completedFeatures = mappedFeatures.filter(f => f.status === 'Completed').length;
-  const inProgressFeatures = mappedFeatures.filter(f => f.status === 'In Progress').length;
-  const notPickedUpFeatures = mappedFeatures.filter(f => f.status === 'Not Picked Up').length;
+  const completedFeatures = mappedFeatures.filter(f => f.percentageComplete === 100).length;
+  const inProgressFeatures = mappedFeatures.filter(f => f.percentageComplete !== undefined && f.percentageComplete !== null && f.percentageComplete > 0 && f.percentageComplete < 100).length;
+  const notPickedUpFeatures = mappedFeatures.filter(f => f.percentageComplete === undefined || f.percentageComplete === null || f.percentageComplete === 0).length;
 
   const average = totalFeatures > 0
     ? mappedFeatures.reduce((acc, f) => acc + (f.percentageComplete || 0), 0) / totalFeatures
