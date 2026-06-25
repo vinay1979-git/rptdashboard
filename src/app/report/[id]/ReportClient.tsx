@@ -286,14 +286,14 @@ export default function ReportClient() {
               <Sparkles className="h-4.5 w-4.5 text-[#3B42C4]" />
               Executive Highlights
             </h3>
-            <ul className="list-disc pl-4 flex flex-col gap-2.5 text-xs text-[#030522] font-medium">
+            <ol className="list-decimal list-inside space-y-2 text-[#6F7C95] text-sm mt-4">
               {payload.highlights.map((h, i) => (
                 <li key={i} className="line-clamp-4 leading-relaxed">{h}</li>
               ))}
               {payload.highlights.length === 0 && (
                 <li className="italic text-[#6F7C95] list-none">No highlights added.</li>
               )}
-            </ul>
+            </ol>
           </div>
 
           {/* 1. Summary Stats Bar */}

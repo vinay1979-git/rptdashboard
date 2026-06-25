@@ -88,7 +88,7 @@ export function generateGmailReportHtml(
   const highlightsHtml = payload.highlights
     .map(
       h => `
-      <li style="margin-bottom: 8px; color: #030522; font-size: 13px; line-height: 1.5; font-family: Arial, sans-serif;">
+      <li style="margin-bottom: 8px; font-family: Arial, sans-serif;">
         ${h}
       </li>
     `
@@ -125,9 +125,9 @@ export function generateGmailReportHtml(
                 <tr>
                   <td>
                     <h3 style="font-size: 15px; font-weight: bold; color: #030522; border-bottom: 1px solid #E6E9EF; padding-bottom: 8px; margin-bottom: 12px; margin-top: 0; text-transform: uppercase; letter-spacing: 0.5px;">Major Highlights & Achievements</h3>
-                    <ul style="margin: 0; padding-left: 20px;">
+                    <ol style="margin: 0 0 24px 0; padding-left: 24px; color: #6F7C95; font-size: 14px; line-height: 1.6;">
                       ${highlightsHtml}
-                    </ul>
+                    </ol>
                   </td>
                 </tr>
               </table>
