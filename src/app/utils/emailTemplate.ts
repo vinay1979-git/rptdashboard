@@ -145,29 +145,23 @@ export function generateGmailReportHtml(
                       </tr>
                     </table>
 
-                    <!-- Rebuild KPI Boxes (The Hybrid-Fluid Method) -->
-                    <table width="100%" border="0" cellpadding="0" cellspacing="0" style="margin-bottom: 24px;">
+                    <!-- Rebuild KPI Boxes (Strict Single-Row Table Layout) -->
+                    <table width="100%" border="0" cellpadding="0" cellspacing="0" style="margin-bottom: 24px; table-layout: fixed;">
                       <tr>
-                        <td align="center" style="font-size: 0; text-align: center;">
-                          <!--[if mso]><table width="100%" border="0" cellpadding="0" cellspacing="0"><tr><td width="33%" valign="top"><![endif]-->
-                          <div style="display: inline-block; width: 100%; max-width: 220px; vertical-align: top;">
-                            <table width="100%" border="0" cellpadding="16" cellspacing="0"><tr><td style="background-color: #F9FAFC; border: 1px solid #E6E9EF; border-radius: 8px; text-align: center;">
-                              <div style="font-size: 12px; color: #6F7C95;">Total Features</div><div style="font-size: 24px; color: #030522; font-weight: bold;">${totalFeatures}</div>
-                            </td></tr></table>
-                          </div>
-                          <!--[if mso]></td><td width="33%" valign="top"><![endif]-->
-                          <div style="display: inline-block; width: 100%; max-width: 220px; vertical-align: top;">
-                            <table width="100%" border="0" cellpadding="16" cellspacing="0"><tr><td style="background-color: #F9FAFC; border: 1px solid #E6E9EF; border-radius: 8px; text-align: center;">
-                              <div style="font-size: 12px; color: #6F7C95;">Features on track</div><div style="font-size: 24px; color: #030522; font-weight: bold;">${featuresOnTrack}</div>
-                            </td></tr></table>
-                          </div>
-                          <!--[if mso]></td><td width="33%" valign="top"><![endif]-->
-                          <div style="display: inline-block; width: 100%; max-width: 220px; vertical-align: top;">
-                            <table width="100%" border="0" cellpadding="16" cellspacing="0"><tr><td style="background-color: #F9FAFC; border: 1px solid #E6E9EF; border-radius: 8px; text-align: center;">
-                              <div style="font-size: 12px; color: #6F7C95;">Potential Delay</div><div style="font-size: 24px; color: #030522; font-weight: bold;">${featuresAtRisk}</div>
-                            </td></tr></table>
-                          </div>
-                          <!--[if mso]></td></tr></table><![endif]-->
+                        <td width="33.33%" valign="top" style="padding-right: 6px;">
+                          <table width="100%" border="0" cellpadding="16" cellspacing="0" style="background-color: #F9FAFC; border: 1px solid #E6E9EF; border-radius: 8px;"><tr><td align="center">
+                            <div style="font-size: 12px; color: #6F7C95; margin-bottom: 4px;">Total Features</div><div style="font-size: 24px; color: #030522; font-weight: bold;">${totalFeatures}</div>
+                          </td></tr></table>
+                        </td>
+                        <td width="33.33%" valign="top" style="padding-left: 3px; padding-right: 3px;">
+                          <table width="100%" border="0" cellpadding="16" cellspacing="0" style="background-color: #F9FAFC; border: 1px solid #E6E9EF; border-radius: 8px;"><tr><td align="center">
+                            <div style="font-size: 12px; color: #6F7C95; margin-bottom: 4px;">Features on track</div><div style="font-size: 24px; color: #030522; font-weight: bold;">${featuresOnTrack}</div>
+                          </td></tr></table>
+                        </td>
+                        <td width="33.33%" valign="top" style="padding-left: 6px;">
+                          <table width="100%" border="0" cellpadding="16" cellspacing="0" style="background-color: #F9FAFC; border: 1px solid #E6E9EF; border-radius: 8px;"><tr><td align="center">
+                            <div style="font-size: 12px; color: #6F7C95; margin-bottom: 4px;">Potential Delay</div><div style="font-size: 24px; color: #030522; font-weight: bold;">${featuresAtRisk}</div>
+                          </td></tr></table>
                         </td>
                       </tr>
                     </table>
