@@ -130,7 +130,7 @@ export function generateGmailReportHtml(
             </td>
             <td width="5%"></td>
             <td width="30%" valign="top" style="background-color: #F9FAFC; border: 1px solid #E6E9EF; border-radius: 6px; padding: 16px; text-align: center; font-family: Arial, sans-serif;">
-              <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #6F7C95; font-weight: bold;">Features at risk</div>
+              <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #6F7C95; font-weight: bold;">Potential Delay</div>
               <div style="font-size: 24px; font-weight: bold; margin-top: 6px; color: #030522;">${featuresAtRisk}</div>
             </td>
           </tr>
