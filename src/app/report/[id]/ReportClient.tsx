@@ -277,10 +277,25 @@ export default function ReportClient() {
         </button>
       </div>
 
-      {/* Conditional Tab Rendering */}
       {activeTab === 'interactive' ? (
         <div className="flex flex-col gap-6">
           
+          {/* 2. Executive Highlights (Full Width) */}
+          <div className="bg-white border border-[#E6E9EF] rounded-lg shadow-sm p-6">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-[#6F7C95] mb-4 flex items-center gap-1.5">
+              <Sparkles className="h-4.5 w-4.5 text-[#3B42C4]" />
+              Executive Highlights
+            </h3>
+            <ul className="list-disc pl-4 flex flex-col gap-2.5 text-xs text-[#030522] font-medium">
+              {payload.highlights.map((h, i) => (
+                <li key={i} className="line-clamp-4 leading-relaxed">{h}</li>
+              ))}
+              {payload.highlights.length === 0 && (
+                <li className="italic text-[#6F7C95] list-none">No highlights added.</li>
+              )}
+            </ul>
+          </div>
+
           {/* 1. Summary Stats Bar */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {/* KPI 1 */}
@@ -310,22 +325,6 @@ export default function ReportClient() {
               <div className="text-2xl md:text-3xl font-black text-red-650 mt-1">{payload.openRisks.length}</div>
               <div className="text-xs text-[#6F7C95] mt-1 font-medium">Mitigated: {payload.mitigatedRisks.length} Items</div>
             </div>
-          </div>
-
-          {/* 2. Executive Highlights (Full Width) */}
-          <div className="bg-white border border-[#E6E9EF] rounded-lg shadow-sm p-6">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-[#6F7C95] mb-4 flex items-center gap-1.5">
-              <Sparkles className="h-4.5 w-4.5 text-[#3B42C4]" />
-              Executive Highlights
-            </h3>
-            <ul className="list-disc pl-4 flex flex-col gap-2.5 text-xs text-[#030522] font-medium">
-              {payload.highlights.map((h, i) => (
-                <li key={i} className="line-clamp-4 leading-relaxed">{h}</li>
-              ))}
-              {payload.highlights.length === 0 && (
-                <li className="italic text-[#6F7C95] list-none">No highlights added.</li>
-              )}
-            </ul>
           </div>
 
           {/* 3. Capabilities by Business Outcome (Full Width) */}
