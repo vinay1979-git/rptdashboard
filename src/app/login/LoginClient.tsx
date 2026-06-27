@@ -65,7 +65,6 @@ export default function LoginClient() {
                   type="password" 
                   name="password"
                   required
-                  defaultValue="Welcome@123"
                   className="w-full pl-10 pr-3 py-2 bg-white border border-[#E6E9EF] text-[#030522] rounded-md focus:outline-none focus:ring-2 focus:ring-[#3B42C4] focus:border-[#3B42C4] text-sm transition-all"
                   placeholder="••••••••"
                 />
