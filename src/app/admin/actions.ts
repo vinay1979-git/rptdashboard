@@ -30,11 +30,10 @@ export async function registerUser(email: string) {
   // 2. Initialize the admin client to bypass standard RLS constraints
   const adminSupabase = createAdminClient();
 
-  // 3. Provision the new user account using Admin Auth API
-  const { data: provisionedData, error: provisionError } = await adminSupabase.auth.admin.createUser({
+  // 3. Send an invite link so the user sets their own password on first login
+  const { data: provisionedData, error: provisionError } = await adminSupabase.auth.admin.generateLink({
+    type: 'invite',
     email,
-    password: 'Welcome@123',
-    email_confirm: true,
   });
 
   if (provisionError) {
@@ -44,7 +43,7 @@ export async function registerUser(email: string) {
   if (provisionedData && provisionedData.user) {
     // 4. Ensure profile row is generated (matching the trigger configuration)
     const isAdminEmail = email === 'vinay1979@gmail.com' || email === 'vinayvis@lentra.ai';
-    
+
     await adminSupabase.from('profiles').upsert({
       id: provisionedData.user.id,
       email: email,
@@ -53,5 +52,5 @@ export async function registerUser(email: string) {
   }
 
   revalidatePath('/admin');
-  return { success: `Successfully provisioned ${email} with password Welcome@123.` };
+  return { success: `Invite email sent to ${email}. They'll be prompted to set their own password on first login.` };
 }

@@ -140,9 +140,9 @@ export default function AdminClient() {
                   </div>
                 </div>
 
-                {/* Password notice */}
+                {/* Invite notice */}
                 <div className="text-[11px] text-slate-600 leading-normal bg-slate-50 p-3 rounded-lg border border-slate-200">
-                  🔒 <strong>Password Provisioning:</strong> New accounts are automatically activated with their email pre-confirmed and a temporary password set to <strong>`Welcome@123`</strong>.
+                  <strong>Invite flow:</strong> The user will receive an email with a one-time link to set their own password before first login.
                 </div>
 
                 <button
